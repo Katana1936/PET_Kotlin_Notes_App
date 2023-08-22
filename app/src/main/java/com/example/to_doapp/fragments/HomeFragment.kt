@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.to_doapp.databinding.FragmentHomeBinding
 import com.example.to_doapp.utils.adapter.TaskAdapter
 import com.example.to_doapp.utils.model.ToDoData
@@ -83,6 +84,29 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         taskAdapter = TaskAdapter(toDoItemList)
         taskAdapter.setListener(this)
         binding.mainRecyclerView.adapter = taskAdapter
+        //new
+        taskAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                updateNoteCount()
+            }
+
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                updateNoteCount()
+            }
+
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                updateNoteCount()
+            }
+        })
+    }
+
+    private fun updateNoteCount() {
+        val itemCount = taskAdapter.itemCount
+        binding.noteNum.text = when (itemCount) {
+            0 -> "No Notes"
+            1 -> "1 Note"
+            else -> "$itemCount Notes"
+        }
     }
 
     override fun saveTask(todoTask: String, todoEdit: TextInputEditText) {
