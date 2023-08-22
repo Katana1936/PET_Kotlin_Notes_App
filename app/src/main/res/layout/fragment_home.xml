@@ -12,22 +12,32 @@
         android:layout_height="150dp"
         android:scaleType="fitXY"
         android:src="@drawable/design_one"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/addTaskBtn1"
+        android:id="@+id/addTaskBtn"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:visibility="gone"
         android:src="@drawable/ic_baseline_add_"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/addTaskBtn_main"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_baseline_add_"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
     <ImageView
@@ -36,9 +46,11 @@
         android:layout_height="130dp"
         android:scaleType="fitXY"
         android:src="@drawable/ellipse_one"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <ImageView
         android:id="@+id/imageView3"
@@ -47,20 +59,11 @@
         android:layout_marginStart="12dp"
         android:scaleType="fitXY"
         android:src="@drawable/design_two"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/addTaskBtn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/ic_baseline_add_"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 
     <androidx.recyclerview.widget.RecyclerView
