@@ -1,5 +1,4 @@
 package com.example.to_doapp.fragments
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +10,6 @@ import androidx.navigation.Navigation
 import com.example.to_doapp.R
 import com.example.to_doapp.databinding.FragmentSignUpBinding
 import com.google.firebase.auth.FirebaseAuth
-
-
 class SignUpFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var mAuth: FirebaseAuth
@@ -44,7 +41,6 @@ class SignUpFragment : Fragment() {
             } else
                 Toast.makeText(context, "Empty fields are not allowed", Toast.LENGTH_SHORT).show()
         }
-
     }
     private fun registerUser(email: String, pass: String) {
         mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
