@@ -22,14 +22,12 @@ import com.google.firebase.ktx.Firebase
 
 class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener,
     TaskAdapter.TaskAdapterInterface {
-
     private val TAG = "HomeFragment"
     private lateinit var binding: FragmentHomeBinding
     private lateinit var database: DatabaseReference
     private var frag: ToDoDialogFragment? = null
     private lateinit var auth: FirebaseAuth
     private lateinit var authId: String
-
     private lateinit var taskAdapter: TaskAdapter
     private lateinit var toDoItemList: MutableList<ToDoData>
 
@@ -37,73 +35,51 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         init()
-
         //get data from firebase
         getTaskFromFirebase()
-
-
         binding.addTaskBtn.setOnClickListener {
-
             if (frag != null)
                 childFragmentManager.beginTransaction().remove(frag!!).commit()
             frag = ToDoDialogFragment()
             frag!!.setListener(this)
-
             frag!!.show(
                 childFragmentManager,
                 ToDoDialogFragment.TAG
             )
-
         }
     }
-
     private fun getTaskFromFirebase() {
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-
                 toDoItemList.clear()
                 for (taskSnapshot in snapshot.children) {
                     val todoTask =
                         taskSnapshot.key?.let { ToDoData(it, taskSnapshot.value.toString()) }
-
                     if (todoTask != null) {
                         toDoItemList.add(todoTask)
                     }
-
                 }
                 Log.d(TAG, "onDataChange: " + toDoItemList)
                 taskAdapter.notifyDataSetChanged()
-
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
             }
-
-
         })
     }
-
     private fun init() {
-
         auth = FirebaseAuth.getInstance()
         authId = auth.currentUser!!.uid
         database = Firebase.database.reference.child("Tasks")
             .child(authId)
-
-
         binding.mainRecyclerView.setHasFixedSize(true)
         binding.mainRecyclerView.layoutManager = LinearLayoutManager(context)
-
         toDoItemList = mutableListOf()
         taskAdapter = TaskAdapter(toDoItemList)
         taskAdapter.setListener(this)
@@ -111,7 +87,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     }
 
     override fun saveTask(todoTask: String, todoEdit: TextInputEditText) {
-
         database
             .push().setValue(todoTask)
             .addOnCompleteListener {
@@ -124,9 +99,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 }
             }
         frag!!.dismiss()
-
     }
-
     override fun updateTask(toDoData: ToDoData, todoEdit: TextInputEditText) {
         val map = HashMap<String, Any>()
         map[toDoData.taskId] = toDoData.task
@@ -139,7 +112,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             frag!!.dismiss()
         }
     }
-
     override fun onDeleteItemClicked(toDoData: ToDoData, position: Int) {
         database.child(toDoData.taskId).removeValue().addOnCompleteListener {
             if (it.isSuccessful) {
@@ -149,11 +121,9 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             }
         }
     }
-
     override fun onEditItemClicked(toDoData: ToDoData, position: Int) {
         if (frag != null)
             childFragmentManager.beginTransaction().remove(frag!!).commit()
-
         frag = ToDoDialogFragment.newInstance(toDoData.taskId, toDoData.task)
         frag!!.setListener(this)
         frag!!.show(
