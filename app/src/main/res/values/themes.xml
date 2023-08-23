@@ -13,5 +13,10 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/secondary_color</item>
     </style>
 
+    <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:background">@drawable/search_view_background</item>
+        <item name="android:queryBackground">@android:color/transparent</item>
+    </style>
+
     <style name="Theme.ToDoApp" parent="Base.Theme.ToDoApp" />
 </resources>
