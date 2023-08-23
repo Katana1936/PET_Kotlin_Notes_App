@@ -1,5 +1,6 @@
 package com.example.to_doapp.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -57,6 +58,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     }
     private fun getTaskFromFirebase() {
         database.addValueEventListener(object : ValueEventListener {
+            @SuppressLint("NotifyDataSetChanged")
             override fun onDataChange(snapshot: DataSnapshot) {
                 toDoItemList.clear()
                 for (taskSnapshot in snapshot.children) {

@@ -34,11 +34,19 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                 val sdf = SimpleDateFormat("HH:mm")
                 val date = Date(this.timestamp)
                 binding.textTime.text = sdf.format(date)
-
-                if (list.size > 1) {
-                    binding.root.background = ContextCompat.getDrawable(binding.root.context, R.drawable.sharp_corners)
-                } else {
-                    binding.root.background = ContextCompat.getDrawable(binding.root.context, R.drawable.rounded_corners)
+                when {
+                    list.size == 1 -> {
+                        binding.root.background = ContextCompat.getDrawable(binding.root.context, R.drawable.rounded_corners)
+                    }
+                    position == 0 -> {
+                        binding.root.background = ContextCompat.getDrawable(binding.root.context, R.drawable.top_rouned_corners)
+                    }
+                    position == list.size - 1 -> {
+                        binding.root.background = ContextCompat.getDrawable(binding.root.context, R.drawable.bottom_rounded_corners)
+                    }
+                    else -> {
+                        binding.root.background = ContextCompat.getDrawable(binding.root.context, R.drawable.sharp_corners)
+                    }
                 }
                 Log.d(TAG, "onBindViewHolder: "+this)
                 binding.editTask.setOnClickListener {
@@ -50,6 +58,7 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
             }
         }
     }
+
 
     override fun getItemCount(): Int {
         return list.size
