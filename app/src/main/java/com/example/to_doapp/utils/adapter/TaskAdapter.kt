@@ -1,9 +1,12 @@
 package com.example.to_doapp.utils.adapter
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.to_doapp.R
 import com.example.to_doapp.databinding.EachTodoItemBinding
 import com.example.to_doapp.utils.model.ToDoData
 import java.text.SimpleDateFormat
@@ -23,14 +26,20 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         return TaskViewHolder(binding)
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         with(holder) {
             with(list[position]) {
                 binding.todoTask.text = this.task
-                // Преобразуем миллисекунды в удобный формат времени
                 val sdf = SimpleDateFormat("HH:mm")
                 val date = Date(this.timestamp)
                 binding.textTime.text = sdf.format(date)
+
+                if (list.size > 1) {
+                    binding.root.background = ContextCompat.getDrawable(binding.root.context, R.drawable.sharp_corners)
+                } else {
+                    binding.root.background = ContextCompat.getDrawable(binding.root.context, R.drawable.rounded_corners)
+                }
                 Log.d(TAG, "onBindViewHolder: "+this)
                 binding.editTask.setOnClickListener {
                     listener?.onEditItemClicked(this , position)
@@ -42,17 +51,14 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         }
     }
 
-
     override fun getItemCount(): Int {
         return list.size
     }
-
+    @SuppressLint("NotifyDataSetChanged")
     fun updateList(newList: List<ToDoData>) {
         list = newList.toMutableList()
         notifyDataSetChanged()
     }
-
-
     interface TaskAdapterInterface{
         fun onDeleteItemClicked(toDoData: ToDoData , position : Int)
         fun onEditItemClicked(toDoData: ToDoData , position: Int)
