@@ -16,7 +16,7 @@ import java.util.Date
 class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
     private val TAG = "TaskAdapter"
     private var listener: TaskAdapterInterface? = null
-    var isSelectionMode = false 
+    var isSelectionMode = false
     fun setListener(listener: TaskAdapterInterface) {
         this.listener = listener
     }
@@ -62,9 +62,8 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                 binding.deleteTask.setOnClickListener {
                     listener?.onDeleteItemClicked(this , position)
                 }
-                binding.selectionCircle.setOnClickListener {
-                    binding.selectionCircle.isChecked = !binding.selectionCircle.isChecked
-                    this.isSelected = binding.selectionCircle.isChecked
+                binding.selectionCircle.setOnCheckedChangeListener { _, isChecked ->
+                    this.isSelected = isChecked
                 }
             }
         }
