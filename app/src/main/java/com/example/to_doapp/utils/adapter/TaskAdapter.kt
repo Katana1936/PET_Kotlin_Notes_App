@@ -3,6 +3,7 @@ package com.example.to_doapp.utils.adapter
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -13,9 +14,10 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
-    private  val TAG = "TaskAdapter"
-    private var listener:TaskAdapterInterface? = null
-    fun setListener(listener:TaskAdapterInterface){
+    private val TAG = "TaskAdapter"
+    private var listener: TaskAdapterInterface? = null
+    var isSelectionMode = false 
+    fun setListener(listener: TaskAdapterInterface) {
         this.listener = listener
     }
     class TaskViewHolder(val binding: EachTodoItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -34,6 +36,11 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                 val sdf = SimpleDateFormat("HH:mm")
                 val date = Date(this.timestamp)
                 binding.textTime.text = sdf.format(date)
+                binding.selectionCircle.visibility = if (isSelectionMode) View.VISIBLE else View.GONE
+                binding.selectionCircle.isChecked = this.isSelected
+                binding.selectionCircle.setOnCheckedChangeListener { _, isChecked ->
+                    this.isSelected = isChecked
+                }
                 when {
                     list.size == 1 -> {
                         binding.root.background = ContextCompat.getDrawable(binding.root.context, R.drawable.rounded_corners)
@@ -55,10 +62,21 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                 binding.deleteTask.setOnClickListener {
                     listener?.onDeleteItemClicked(this , position)
                 }
+                binding.selectionCircle.setOnClickListener {
+                    binding.selectionCircle.isChecked = !binding.selectionCircle.isChecked
+                    this.isSelected = binding.selectionCircle.isChecked
+                }
             }
         }
     }
 
+    fun getSelectedItems(): List<ToDoData> {
+        return list.filter { it.isSelected }
+    }
+    fun toggleSelectionMode() {
+        isSelectionMode = !isSelectionMode
+        notifyDataSetChanged()
+    }
 
     override fun getItemCount(): Int {
         return list.size

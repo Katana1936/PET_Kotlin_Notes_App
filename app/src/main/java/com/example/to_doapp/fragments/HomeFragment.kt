@@ -55,6 +55,9 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 ToDoDialogFragment.TAG
             )
         }
+        binding.Edit.setOnClickListener {
+            taskAdapter.toggleSelectionMode()
+        }
     }
     private fun getTaskFromFirebase() {
         database.addValueEventListener(object : ValueEventListener {
@@ -100,17 +103,13 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         })
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                // Вы можете обработать событие отправки поискового запроса здесь
                 return false
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
-                // Фильтрация данных на основе текста
                 filterTasks(newText ?: "")
                 return true
             }
         })
-
     }
 
     private fun filterTasks(query: String) {
