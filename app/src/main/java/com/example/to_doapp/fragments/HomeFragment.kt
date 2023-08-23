@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -88,15 +89,31 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             override fun onChanged() {
                 updateNoteCount()
             }
-
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 updateNoteCount()
             }
-
             override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
                 updateNoteCount()
             }
         })
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                // Вы можете обработать событие отправки поискового запроса здесь
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // Фильтрация данных на основе текста
+                filterTasks(newText ?: "")
+                return true
+            }
+        })
+
+    }
+
+    private fun filterTasks(query: String) {
+        val filteredList = toDoItemList.filter { it.task.contains(query, ignoreCase = true) }
+        taskAdapter.updateList(filteredList)
     }
 
     private fun updateNoteCount() {

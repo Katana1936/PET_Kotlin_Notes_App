@@ -9,8 +9,7 @@ import com.example.to_doapp.utils.model.ToDoData
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class TaskAdapter(private val list: MutableList<ToDoData>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
-
+class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
     private  val TAG = "TaskAdapter"
     private var listener:TaskAdapterInterface? = null
     fun setListener(listener:TaskAdapterInterface){
@@ -47,6 +46,12 @@ class TaskAdapter(private val list: MutableList<ToDoData>) : RecyclerView.Adapte
     override fun getItemCount(): Int {
         return list.size
     }
+
+    fun updateList(newList: List<ToDoData>) {
+        list = newList.toMutableList()
+        notifyDataSetChanged()
+    }
+
 
     interface TaskAdapterInterface{
         fun onDeleteItemClicked(toDoData: ToDoData , position : Int)
