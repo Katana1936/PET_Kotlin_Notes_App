@@ -59,13 +59,12 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             override fun onDataChange(snapshot: DataSnapshot) {
                 toDoItemList.clear()
                 for (taskSnapshot in snapshot.children) {
-                    val todoTask =
-                        taskSnapshot.key?.let { ToDoData(it, taskSnapshot.value.toString()) }
-                    if (todoTask != null) {
-                        toDoItemList.add(todoTask)
-                    }
+                    val taskId = taskSnapshot.key ?: continue
+                    val task = taskSnapshot.child("task").getValue(String::class.java) ?: ""
+                    val timestamp = taskSnapshot.child("timestamp").getValue(Long::class.java) ?: continue
+                    val todoTask = ToDoData(taskId, task, timestamp)
+                    toDoItemList.add(todoTask)
                 }
-                Log.d(TAG, "onDataChange: " + toDoItemList)
                 taskAdapter.notifyDataSetChanged()
             }
             override fun onCancelled(error: DatabaseError) {
@@ -110,19 +109,19 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     }
 
     override fun saveTask(todoTask: String, todoEdit: TextInputEditText) {
-        database
-            .push().setValue(todoTask)
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    Toast.makeText(context, "Task Added Successfully", Toast.LENGTH_SHORT).show()
-                    todoEdit.text = null
-
-                } else {
-                    Toast.makeText(context, it.exception.toString(), Toast.LENGTH_SHORT).show()
-                }
+        val taskId = database.push().key ?: return
+        val newTask = ToDoData(taskId, todoTask)
+        database.child(taskId).setValue(newTask).addOnCompleteListener {
+            if (it.isSuccessful) {
+                Toast.makeText(context, "Task Added Successfully", Toast.LENGTH_SHORT).show()
+                todoEdit.text = null
+            } else {
+                Toast.makeText(context, it.exception.toString(), Toast.LENGTH_SHORT).show()
             }
+        }
         frag!!.dismiss()
     }
+
     override fun updateTask(toDoData: ToDoData, todoEdit: TextInputEditText) {
         val map = HashMap<String, Any>()
         map[toDoData.taskId] = toDoData.task

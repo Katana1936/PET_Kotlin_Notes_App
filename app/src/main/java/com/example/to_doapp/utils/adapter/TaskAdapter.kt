@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.to_doapp.databinding.EachTodoItemBinding
 import com.example.to_doapp.utils.model.ToDoData
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class TaskAdapter(private val list: MutableList<ToDoData>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
@@ -26,18 +28,21 @@ class TaskAdapter(private val list: MutableList<ToDoData>) : RecyclerView.Adapte
         with(holder) {
             with(list[position]) {
                 binding.todoTask.text = this.task
-
+                // Преобразуем миллисекунды в удобный формат времени
+                val sdf = SimpleDateFormat("HH:mm")
+                val date = Date(this.timestamp)
+                binding.textTime.text = sdf.format(date)
                 Log.d(TAG, "onBindViewHolder: "+this)
                 binding.editTask.setOnClickListener {
                     listener?.onEditItemClicked(this , position)
                 }
-
                 binding.deleteTask.setOnClickListener {
                     listener?.onDeleteItemClicked(this , position)
                 }
             }
         }
     }
+
 
     override fun getItemCount(): Int {
         return list.size

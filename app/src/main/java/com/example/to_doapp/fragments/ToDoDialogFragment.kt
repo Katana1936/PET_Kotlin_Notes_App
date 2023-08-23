@@ -47,20 +47,14 @@ class ToDoDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         if (arguments != null){
-
             toDoData = ToDoData(arguments?.getString("taskId").toString() ,arguments?.getString("task").toString())
             binding.todoEt.setText(toDoData?.task)
         }
-
-
         binding.todoClose.setOnClickListener {
             dismiss()
         }
-
         binding.todoNextBtn.setOnClickListener {
-
             val todoTask = binding.todoEt.text.toString()
             if (todoTask.isNotEmpty()){
                 if (toDoData == null){

@@ -3,9 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardUseCompatPadding="true">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,28 +15,26 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="1dp"
             android:fontFamily="@font/inter_extra_bold"
             android:gravity="left"
-            android:paddingStart="16dp"
             android:text="Item 1"
             android:textColor="@color/black"
             android:textSize="17sp"
-            app:layout_constraintBottom_toTopOf="@+id/text_first"
+            app:layout_constraintBottom_toTopOf="@+id/text_time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/text_first"
+            android:id="@+id/text_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="10dp"
-            android:fontFamily="@font/inter_semi_bold"
-            android:paddingStart="16dp"
-            android:text="00:0"
+            android:fontFamily="@font/inter_regular"
+            android:text="00:00"
             android:textColor="#818181"
-            android:textSize="17sp"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -48,13 +44,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
-            android:fontFamily="@font/inter_semi_bold"
-            android:paddingStart="16dp"
+            android:fontFamily="@font/inter_regular"
             android:text="No additional text"
             android:textColor="#818181"
-            android:textSize="17sp"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_first" />
+            app:layout_constraintStart_toEndOf="@+id/text_time" />
 
         <ImageView
             android:id="@+id/editTask"
