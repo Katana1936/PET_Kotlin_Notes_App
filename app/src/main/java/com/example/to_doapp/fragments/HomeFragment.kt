@@ -32,8 +32,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     private lateinit var auth: FirebaseAuth
     private lateinit var authId: String
     private lateinit var taskAdapter: TaskAdapter
-    private lateinit var toDoItemList: MutableList<ToDoData>
-
+    private var toDoItemList: MutableList<ToDoData> = mutableListOf()
     private var isSearchViewEnabled = true
 
     override fun onCreateView(
@@ -43,6 +42,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,36 +58,16 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 ToDoDialogFragment.TAG
             )
         }
-
-        binding.Edit.setOnClickListener {
-            toggleEditMode()
-        }
-
-        binding.Done.setOnClickListener {
-            toggleEditMode()
-        }
-
-        binding.searchView.setOnTouchListener { _, _ ->
-            !isSearchViewEnabled
-        }
-
+        binding.Edit.setOnClickListener { toggleEditMode() }
+        binding.Done.setOnClickListener { toggleEditMode() }
+        binding.searchView.setOnTouchListener { _, _ -> !isSearchViewEnabled }
         binding.searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
             if (!isSearchViewEnabled && hasFocus) {
                 binding.searchView.clearFocus()
             }
         }
-        binding.Done.setOnClickListener {
-            taskAdapter.deselectAllItems()
-            taskAdapter.toggleSelectionMode()
-            isSearchViewEnabled = true
-            binding.MoveAll.visibility = View.GONE
-            binding.DeleteAll.visibility = View.GONE
-            binding.searchView.isEnabled = true
-            binding.searchView.alpha = 1.0f
-            binding.Done.visibility = View.GONE
-            binding.Edit.visibility = View.VISIBLE
-            binding.noteNum.visibility = View.VISIBLE
-            binding.addTaskBtnMain.visibility = View.VISIBLE
+        binding.DeleteAll.setOnClickListener {
+            taskAdapter.deleteSelectedItems()
         }
     }
     private fun toggleEditMode() {
@@ -103,7 +83,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         binding.Done.visibility = if (binding.Done.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         binding.Edit.visibility = if (binding.Done.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
-
     private fun getTaskFromFirebase() {
         database.addValueEventListener(object : ValueEventListener {
             @SuppressLint("NotifyDataSetChanged")
@@ -116,6 +95,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                     val todoTask = ToDoData(taskId, task, timestamp)
                     toDoItemList.add(todoTask)
                 }
+                taskAdapter.updateList(toDoItemList)
                 taskAdapter.notifyDataSetChanged()
             }
             override fun onCancelled(error: DatabaseError) {
@@ -134,7 +114,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         taskAdapter = TaskAdapter(toDoItemList)
         taskAdapter.setListener(this)
         binding.mainRecyclerView.adapter = taskAdapter
-        //new
         taskAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 updateNoteCount()
@@ -194,11 +173,12 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         }
     }
     override fun onDeleteItemClicked(toDoData: ToDoData, position: Int) {
+        Log.d(TAG, "Deleting task with id: ${toDoData.taskId}")
         database.child(toDoData.taskId).removeValue().addOnCompleteListener {
             if (it.isSuccessful) {
-                Toast.makeText(context, "Deleted Successfully", Toast.LENGTH_SHORT).show()
+                Log.d(TAG, "Task deleted successfully")
             } else {
-                Toast.makeText(context, it.exception.toString(), Toast.LENGTH_SHORT).show()
+                Log.e(TAG, "Failed to delete task", it.exception)
             }
         }
     }
@@ -212,5 +192,4 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             ToDoDialogFragment.TAG
         )
     }
-
 }

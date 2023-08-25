@@ -1,13 +1,10 @@
 package com.example.to_doapp.utils.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.GradientDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.to_doapp.R
 import com.example.to_doapp.databinding.EachTodoItemBinding
@@ -16,10 +13,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
-    interface TaskAdapterInterface{
-        fun onDeleteItemClicked(toDoData: ToDoData, position: Int)
-        fun onEditItemClicked(toDoData: ToDoData, position: Int)
-    }
     private val TAG = "TaskAdapter"
     private var listener: TaskAdapterInterface? = null
     var isSelectionMode = false
@@ -28,8 +21,7 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
     }
     class TaskViewHolder(val binding: EachTodoItemBinding) : RecyclerView.ViewHolder(binding.root)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        val binding =
-            EachTodoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = EachTodoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TaskViewHolder(binding)
     }
     @SuppressLint("SimpleDateFormat")
@@ -43,6 +35,11 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                 binding.selectionCircle.visibility = if (isSelectionMode) View.VISIBLE else View.GONE
                 binding.selectionCircle.isChecked = this.isSelected
 
+                binding.selectionCircle.setOnClickListener {
+                    if (isSelectionMode) {
+                        toggleSelection(position)
+                    }
+                }
                 val backgroundDrawableRes = when {
                     list.size == 1 -> R.drawable.rounded_corners
                     position == 0 -> R.drawable.top_rounded_corners
@@ -54,22 +51,22 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                     listener?.onEditItemClicked(this, position)
                 }
                 binding.deleteTask.setOnClickListener {
-                    listener?.onDeleteItemClicked(this, position)
+                    listener?.onDeleteItemClicked(this , position)
                 }
             }
         }
     }
-    @SuppressLint("NotifyDataSetChanged")
-    fun deselectAllItems() {
-        list.forEach { it.isSelected = false }
-        notifyDataSetChanged()
-    }
-    fun getSelectedItems(): List<ToDoData> {
-        return list.filter { it.isSelected }
+    fun toggleSelection(position: Int) {
+        list[position].isSelected = !list[position].isSelected
+        Log.d(TAG, "Toggled selection for position $position: ${list[position].isSelected}")
+        notifyItemChanged(position)
     }
     @SuppressLint("NotifyDataSetChanged")
     fun toggleSelectionMode() {
         isSelectionMode = !isSelectionMode
+        if (!isSelectionMode) {
+            list.forEach { it.isSelected = false }
+        }
         notifyDataSetChanged()
     }
     override fun getItemCount(): Int {
@@ -78,6 +75,26 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
     @SuppressLint("NotifyDataSetChanged")
     fun updateList(newList: List<ToDoData>) {
         list = newList.toMutableList()
+        list.forEach { it.isSelected = false }
         notifyDataSetChanged()
+    }
+    fun deleteSelectedItems() {
+        val iterator = list.iterator()
+        while (iterator.hasNext()) {
+            val item = iterator.next()
+            if (item.isSelected) {
+                // Удаляем из Firebase через уже имеющийся обработчик
+                listener?.onDeleteItemClicked(item, list.indexOf(item))
+
+                // Удаляем из локального списка
+                iterator.remove()
+            }
+        }
+        notifyDataSetChanged()
+    }
+
+    interface TaskAdapterInterface {
+        fun onDeleteItemClicked(toDoData: ToDoData, position: Int)
+        fun onEditItemClicked(toDoData: ToDoData, position: Int)
     }
 }
