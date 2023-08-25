@@ -4,11 +4,14 @@
         <layer-list>
             <item>
                 <shape android:shape="oval">
-                    <size android:width="24dp" android:height="24dp"/>
+                    <size android:width="20dp" android:height="20dp"/>
                     <solid android:color="#FFA500"/>
                 </shape>
             </item>
-            <item android:drawable="@drawable/baseline_check_24" android:gravity="center"/>
+            <item android:drawable="@drawable/baseline_check_24"
+                android:gravity="center"
+                android:width="15dp"
+                android:height="15dp"/>
         </layer-list>
     </item>
     <item>

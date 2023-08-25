@@ -1,6 +1,7 @@
 package com.example.to_doapp.utils.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.GradientDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,13 +22,11 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         this.listener = listener
     }
     class TaskViewHolder(val binding: EachTodoItemBinding) : RecyclerView.ViewHolder(binding.root)
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val binding =
             EachTodoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TaskViewHolder(binding)
     }
-
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         with(holder) {
@@ -36,38 +35,28 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                 val sdf = SimpleDateFormat("HH:mm")
                 val date = Date(this.timestamp)
                 binding.textTime.text = sdf.format(date)
+                val isItemSelected = binding.selectionCircle.visibility == View.VISIBLE
+
+                val backgroundDrawableRes = when {
+                    list.size == 1 -> if (isItemSelected) R.drawable.selected_rounded_corners else R.drawable.rounded_corners
+                    position == 0 -> if (isItemSelected) R.drawable.selected_top_rounes_corners else R.drawable.top_rouned_corners
+                    position == list.size - 1 -> if (isItemSelected) R.drawable.selected_bottom_rounded_corners else R.drawable.bottom_rounded_corners
+                    else -> if (isItemSelected) R.drawable.selected_sharp_corners else R.drawable.sharp_corners
+                }
+
+                binding.root.setBackgroundResource(backgroundDrawableRes)
                 binding.selectionCircle.visibility = if (isSelectionMode) View.VISIBLE else View.GONE
-                binding.selectionCircle.isChecked = this.isSelected
-                binding.selectionCircle.setOnCheckedChangeListener { _, isChecked ->
-                    this.isSelected = isChecked
-                }
-                when {
-                    list.size == 1 -> {
-                        binding.root.background = ContextCompat.getDrawable(binding.root.context, R.drawable.rounded_corners)
-                    }
-                    position == 0 -> {
-                        binding.root.background = ContextCompat.getDrawable(binding.root.context, R.drawable.top_rouned_corners)
-                    }
-                    position == list.size - 1 -> {
-                        binding.root.background = ContextCompat.getDrawable(binding.root.context, R.drawable.bottom_rounded_corners)
-                    }
-                    else -> {
-                        binding.root.background = ContextCompat.getDrawable(binding.root.context, R.drawable.sharp_corners)
-                    }
-                }
-                Log.d(TAG, "onBindViewHolder: "+this)
+
                 binding.editTask.setOnClickListener {
-                    listener?.onEditItemClicked(this , position)
+                    listener?.onEditItemClicked(this, position)
                 }
                 binding.deleteTask.setOnClickListener {
-                    listener?.onDeleteItemClicked(this , position)
-                }
-                binding.selectionCircle.setOnCheckedChangeListener { _, isChecked ->
-                    this.isSelected = isChecked
+                    listener?.onDeleteItemClicked(this, position)
                 }
             }
         }
     }
+
 
     fun getSelectedItems(): List<ToDoData> {
         return list.filter { it.isSelected }
@@ -86,8 +75,7 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         notifyDataSetChanged()
     }
     interface TaskAdapterInterface{
-        fun onDeleteItemClicked(toDoData: ToDoData , position : Int)
-        fun onEditItemClicked(toDoData: ToDoData , position: Int)
+        fun onDeleteItemClicked(toDoData: ToDoData, position: Int)
+        fun onEditItemClicked(toDoData: ToDoData, position: Int)
     }
-
 }
