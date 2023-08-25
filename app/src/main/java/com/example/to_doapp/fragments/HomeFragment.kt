@@ -47,7 +47,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
-        //get data from firebase
         getTaskFromFirebase()
         binding.addTaskBtnMain.setOnClickListener {
             if (frag != null)
@@ -59,17 +58,13 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 ToDoDialogFragment.TAG
             )
         }
+
         binding.Edit.setOnClickListener {
-            taskAdapter.toggleSelectionMode()
-            isSearchViewEnabled = !isSearchViewEnabled
-            binding.searchView.clearFocus() // Убираем фокус с SearchView
-            binding.searchView.alpha = if (isSearchViewEnabled) 1.0f else 0.5f // Задаем альфа-значение
-            binding.MoveAll.visibility = if (binding.MoveAll.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-            binding.DeleteAll.visibility = if (binding.DeleteAll.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-            binding.noteNum.visibility = if (binding.noteNum.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-            binding.addTaskBtnMain.visibility = if (binding.addTaskBtnMain.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-            binding.Done.visibility = if (binding.Done.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-            binding.Edit.visibility = if (binding.Done.visibility == View.VISIBLE) View.GONE else View.VISIBLE // Скрываем или показываем кнопку Edit
+            toggleEditMode()
+        }
+
+        binding.Done.setOnClickListener {
+            toggleEditMode()
         }
 
         binding.searchView.setOnTouchListener { _, _ ->
@@ -81,8 +76,21 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 binding.searchView.clearFocus()
             }
         }
-
     }
+
+    private fun toggleEditMode() {
+        taskAdapter.toggleSelectionMode()
+        isSearchViewEnabled = !isSearchViewEnabled
+        binding.searchView.clearFocus()
+        binding.searchView.alpha = if (isSearchViewEnabled) 1.0f else 0.5f
+        binding.MoveAll.visibility = if (binding.MoveAll.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        binding.DeleteAll.visibility = if (binding.DeleteAll.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        binding.noteNum.visibility = if (binding.noteNum.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        binding.addTaskBtnMain.visibility = if (binding.addTaskBtnMain.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        binding.Done.visibility = if (binding.Done.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        binding.Edit.visibility = if (binding.Done.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+    }
+
     private fun getTaskFromFirebase() {
         database.addValueEventListener(object : ValueEventListener {
             @SuppressLint("NotifyDataSetChanged")
