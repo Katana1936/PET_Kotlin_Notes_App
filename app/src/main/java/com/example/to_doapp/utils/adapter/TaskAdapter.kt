@@ -44,9 +44,6 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                     else -> R.drawable.sharp_corners
                 }
                 binding.root.setBackgroundResource(backgroundDrawableRes)
-
-
-
                 binding.editTask.setOnClickListener {
                     listener?.onEditItemClicked(this, position)
                 }
