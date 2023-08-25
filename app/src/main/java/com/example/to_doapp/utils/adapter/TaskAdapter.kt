@@ -35,17 +35,17 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                 val sdf = SimpleDateFormat("HH:mm")
                 val date = Date(this.timestamp)
                 binding.textTime.text = sdf.format(date)
-                val isItemSelected = binding.selectionCircle.visibility == View.VISIBLE
+                binding.selectionCircle.visibility = if (isSelectionMode) View.VISIBLE else View.GONE
 
                 val backgroundDrawableRes = when {
-                    list.size == 1 -> if (isItemSelected) R.drawable.selected_rounded_corners else R.drawable.rounded_corners
-                    position == 0 -> if (isItemSelected) R.drawable.selected_top_rounes_corners else R.drawable.top_rouned_corners
-                    position == list.size - 1 -> if (isItemSelected) R.drawable.selected_bottom_rounded_corners else R.drawable.bottom_rounded_corners
-                    else -> if (isItemSelected) R.drawable.selected_sharp_corners else R.drawable.sharp_corners
+                    list.size == 1 -> R.drawable.rounded_corners
+                    position == 0 -> R.drawable.top_rounded_corners
+                    position == list.size - 1 -> R.drawable.bottom_rounded_corners
+                    else -> R.drawable.sharp_corners
                 }
-
                 binding.root.setBackgroundResource(backgroundDrawableRes)
-                binding.selectionCircle.visibility = if (isSelectionMode) View.VISIBLE else View.GONE
+
+
 
                 binding.editTask.setOnClickListener {
                     listener?.onEditItemClicked(this, position)
@@ -56,6 +56,12 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
             }
         }
     }
+
+
+
+
+
+
 
 
     fun getSelectedItems(): List<ToDoData> {
