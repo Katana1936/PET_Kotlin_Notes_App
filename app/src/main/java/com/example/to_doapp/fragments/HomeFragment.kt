@@ -63,6 +63,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             taskAdapter.toggleSelectionMode()
             isSearchViewEnabled = !isSearchViewEnabled
             binding.searchView.clearFocus() // Убираем фокус с SearchView
+            binding.searchView.alpha = if (isSearchViewEnabled) 1.0f else 0.5f // Задаем альфа-значение
             binding.MoveAll.visibility = if (binding.MoveAll.visibility == View.VISIBLE) View.GONE else View.VISIBLE
             binding.DeleteAll.visibility = if (binding.DeleteAll.visibility == View.VISIBLE) View.GONE else View.VISIBLE
             binding.noteNum.visibility = if (binding.noteNum.visibility == View.VISIBLE) View.GONE else View.VISIBLE
