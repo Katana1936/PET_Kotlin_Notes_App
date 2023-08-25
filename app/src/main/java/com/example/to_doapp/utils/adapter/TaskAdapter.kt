@@ -39,11 +39,12 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                         toggleSelection(position)
                     }
                 }
+                val isItemSelected = this.isSelected
                 val backgroundDrawableRes = when {
-                    list.size == 1 -> R.drawable.rounded_corners
-                    position == 0 -> R.drawable.top_rounded_corners
-                    position == list.size - 1 -> R.drawable.bottom_rounded_corners
-                    else -> R.drawable.sharp_corners
+                    list.size == 1 -> if (isItemSelected) R.drawable.selected_rounded_corners else R.drawable.rounded_corners
+                    position == 0 -> if (isItemSelected) R.drawable.selected_top_rounded_corners else R.drawable.top_rounded_corners
+                    position == list.size - 1 -> if (isItemSelected) R.drawable.selected_bottom_rounded_corners else R.drawable.bottom_rounded_corners
+                    else -> if (isItemSelected) R.drawable.selected_sharp_corners else R.drawable.sharp_corners
                 }
                 binding.root.setBackgroundResource(backgroundDrawableRes)
                 binding.editTask.setOnClickListener {
@@ -77,6 +78,7 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         list.forEach { it.isSelected = false }
         notifyDataSetChanged()
     }
+    @SuppressLint("NotifyDataSetChanged")
     fun deleteSelectedItems() {
         val iterator = list.iterator()
         while (iterator.hasNext()) {
