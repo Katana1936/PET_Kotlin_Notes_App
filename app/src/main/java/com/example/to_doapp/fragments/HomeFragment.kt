@@ -33,6 +33,9 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     private lateinit var authId: String
     private lateinit var taskAdapter: TaskAdapter
     private lateinit var toDoItemList: MutableList<ToDoData>
+
+    private var isSearchViewEnabled = true
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,6 +43,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
+    @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
@@ -57,11 +61,21 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         }
         binding.Edit.setOnClickListener {
             taskAdapter.toggleSelectionMode()
-            binding.searchView.isEnabled = !binding.searchView.isEnabled
+            isSearchViewEnabled = !isSearchViewEnabled
+            binding.searchView.clearFocus() // Убираем фокус с SearchView
             binding.MoveAll.visibility = if (binding.MoveAll.visibility == View.VISIBLE) View.GONE else View.VISIBLE
             binding.DeleteAll.visibility = if (binding.DeleteAll.visibility == View.VISIBLE) View.GONE else View.VISIBLE
             binding.noteNum.visibility = if (binding.noteNum.visibility == View.VISIBLE) View.GONE else View.VISIBLE
             binding.addTaskBtnMain.visibility = if (binding.addTaskBtnMain.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        }
+        binding.searchView.setOnTouchListener { _, _ ->
+            !isSearchViewEnabled
+        }
+
+        binding.searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
+            if (!isSearchViewEnabled && hasFocus) {
+                binding.searchView.clearFocus()
+            }
         }
 
     }
