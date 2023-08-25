@@ -80,14 +80,20 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             taskAdapter.deselectAllItems()
             taskAdapter.toggleSelectionMode()
             isSearchViewEnabled = true
-            // остальные действия, которые необходимо выполнить при нажатии на Done
+            binding.MoveAll.visibility = View.GONE
+            binding.DeleteAll.visibility = View.GONE
+            binding.searchView.isEnabled = true
+            binding.searchView.alpha = 1.0f
+            binding.Done.visibility = View.GONE
+            binding.Edit.visibility = View.VISIBLE
+            binding.noteNum.visibility = View.VISIBLE
+            binding.addTaskBtnMain.visibility = View.VISIBLE
         }
-
     }
-
     private fun toggleEditMode() {
         taskAdapter.toggleSelectionMode()
         isSearchViewEnabled = !isSearchViewEnabled
+        binding.searchView.isEnabled = isSearchViewEnabled
         binding.searchView.clearFocus()
         binding.searchView.alpha = if (isSearchViewEnabled) 1.0f else 0.5f
         binding.MoveAll.visibility = if (binding.MoveAll.visibility == View.VISIBLE) View.GONE else View.VISIBLE
@@ -150,12 +156,10 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             }
         })
     }
-
     private fun filterTasks(query: String) {
         val filteredList = toDoItemList.filter { it.task.contains(query, ignoreCase = true) }
         taskAdapter.updateList(filteredList)
     }
-
     private fun updateNoteCount() {
         val itemCount = taskAdapter.itemCount
         binding.noteNum.text = when (itemCount) {
@@ -164,7 +168,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             else -> "$itemCount Notes"
         }
     }
-
     override fun saveTask(todoTask: String, todoEdit: TextInputEditText) {
         val taskId = database.push().key ?: return
         val newTask = ToDoData(taskId, todoTask)
@@ -178,7 +181,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         }
         frag!!.dismiss()
     }
-
     override fun updateTask(toDoData: ToDoData, todoEdit: TextInputEditText) {
         val map = HashMap<String, Any>()
         map[toDoData.taskId] = toDoData.task
