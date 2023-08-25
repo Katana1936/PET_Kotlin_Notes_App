@@ -34,7 +34,6 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                 binding.textTime.text = sdf.format(date)
                 binding.selectionCircle.visibility = if (isSelectionMode) View.VISIBLE else View.GONE
                 binding.selectionCircle.isChecked = this.isSelected
-
                 binding.selectionCircle.setOnClickListener {
                     if (isSelectionMode) {
                         toggleSelection(position)
@@ -51,7 +50,7 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                     listener?.onEditItemClicked(this, position)
                 }
                 binding.deleteTask.setOnClickListener {
-                    listener?.onDeleteItemClicked(this , position)
+                    //listener?.onDeleteItemClicked(this , position)
                 }
             }
         }
@@ -83,16 +82,12 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         while (iterator.hasNext()) {
             val item = iterator.next()
             if (item.isSelected) {
-                // Удаляем из Firebase через уже имеющийся обработчик
                 listener?.onDeleteItemClicked(item, list.indexOf(item))
-
-                // Удаляем из локального списка
                 iterator.remove()
             }
         }
         notifyDataSetChanged()
     }
-
     interface TaskAdapterInterface {
         fun onDeleteItemClicked(toDoData: ToDoData, position: Int)
         fun onEditItemClicked(toDoData: ToDoData, position: Int)
