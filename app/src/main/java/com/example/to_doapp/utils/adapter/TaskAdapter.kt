@@ -59,11 +59,6 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
 
 
 
-
-
-
-
-
     fun getSelectedItems(): List<ToDoData> {
         return list.filter { it.isSelected }
     }
