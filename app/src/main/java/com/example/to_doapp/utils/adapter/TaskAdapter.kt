@@ -15,6 +15,10 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+    interface TaskAdapterInterface{
+        fun onDeleteItemClicked(toDoData: ToDoData, position: Int)
+        fun onEditItemClicked(toDoData: ToDoData, position: Int)
+    }
     private val TAG = "TaskAdapter"
     private var listener: TaskAdapterInterface? = null
     var isSelectionMode = false
@@ -36,6 +40,7 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                 val date = Date(this.timestamp)
                 binding.textTime.text = sdf.format(date)
                 binding.selectionCircle.visibility = if (isSelectionMode) View.VISIBLE else View.GONE
+                binding.selectionCircle.isChecked = this.isSelected
 
                 val backgroundDrawableRes = when {
                     list.size == 1 -> R.drawable.rounded_corners
@@ -53,17 +58,19 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
             }
         }
     }
-
-
-
+    @SuppressLint("NotifyDataSetChanged")
+    fun deselectAllItems() {
+        list.forEach { it.isSelected = false }
+        notifyDataSetChanged()
+    }
     fun getSelectedItems(): List<ToDoData> {
         return list.filter { it.isSelected }
     }
+    @SuppressLint("NotifyDataSetChanged")
     fun toggleSelectionMode() {
         isSelectionMode = !isSelectionMode
         notifyDataSetChanged()
     }
-
     override fun getItemCount(): Int {
         return list.size
     }
@@ -71,9 +78,5 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
     fun updateList(newList: List<ToDoData>) {
         list = newList.toMutableList()
         notifyDataSetChanged()
-    }
-    interface TaskAdapterInterface{
-        fun onDeleteItemClicked(toDoData: ToDoData, position: Int)
-        fun onEditItemClicked(toDoData: ToDoData, position: Int)
     }
 }

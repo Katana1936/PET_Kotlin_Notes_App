@@ -76,6 +76,13 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 binding.searchView.clearFocus()
             }
         }
+        binding.Done.setOnClickListener {
+            taskAdapter.deselectAllItems()
+            taskAdapter.toggleSelectionMode()
+            isSearchViewEnabled = true
+            // остальные действия, которые необходимо выполнить при нажатии на Done
+        }
+
     }
 
     private fun toggleEditMode() {
