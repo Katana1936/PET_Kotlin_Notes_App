@@ -94,4 +94,10 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         fun onDeleteItemClicked(toDoData: ToDoData, position: Int)
         fun onEditItemClicked(toDoData: ToDoData, position: Int)
     }
+    fun removeItem(position: Int) {
+        val item = list[position]
+        listener?.onDeleteItemClicked(item, position)
+        list.removeAt(position)
+        notifyItemRemoved(position)
+    }
 }
