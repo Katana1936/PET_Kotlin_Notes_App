@@ -3,6 +3,7 @@ package com.example.to_doapp.fragments
 import android.annotation.SuppressLint
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -139,7 +140,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 return true
             }
         })
-        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -149,7 +150,14 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             }
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                taskAdapter.removeItem(position)
+                when (direction) {
+                    ItemTouchHelper.LEFT -> {
+                        taskAdapter.removeItem(position)
+                    }
+                    ItemTouchHelper.RIGHT -> {
+                        // Ваш код для "прикрепления" элемента
+                    }
+                }
             }
             override fun onChildDraw(
                 c: Canvas,
@@ -162,20 +170,22 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             ) {
                 val itemView = viewHolder.itemView
                 val itemHeight = itemView.bottom - itemView.top
-                val icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_baseline_delete_24)!!
-                val iconMargin = (itemHeight - icon.intrinsicHeight) / 2
-                val iconTop = itemView.top + (itemHeight - icon.intrinsicHeight) / 2
-                val iconBottom = iconTop + icon.intrinsicHeight
-                val iconLeft = itemView.right - iconMargin - icon.intrinsicWidth
-                val iconRight = itemView.right - iconMargin
-                val scaleFactor = 1f + min(dX / itemView.width.toFloat(), 1f) * 0.2f
-                icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-                c.save()
-                c.scale(scaleFactor, scaleFactor, itemView.right.toFloat(), itemView.top + itemHeight / 2.toFloat())
-                c.clipRect((itemView.right + dX).toInt(), itemView.top, itemView.right, itemView.bottom)
-                c.drawColor(Color.parseColor("#f2f1f7"))
+                val icon: Drawable
+                val iconMargin: Int
+                if (dX > 0) {
+                    icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_pin)!!
+                    iconMargin = (itemHeight - icon.intrinsicHeight) / 2
+                    val iconLeft = itemView.left + iconMargin
+                    val iconRight = itemView.left + iconMargin + icon.intrinsicWidth
+                    icon.setBounds(iconLeft, itemView.top + iconMargin, iconRight, itemView.top + iconMargin + icon.intrinsicHeight)
+                } else {
+                    icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_baseline_delete_24)!!
+                    iconMargin = (itemHeight - icon.intrinsicHeight) / 2
+                    val iconLeft = itemView.right - iconMargin - icon.intrinsicWidth
+                    val iconRight = itemView.right - iconMargin
+                    icon.setBounds(iconLeft, itemView.top + iconMargin, iconRight, itemView.top + iconMargin + icon.intrinsicHeight)
+                }
                 icon.draw(c)
-                c.restore()
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             }
         }

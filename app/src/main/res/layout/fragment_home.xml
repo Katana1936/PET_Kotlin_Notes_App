@@ -62,14 +62,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-
-
-
-
-
-
-
-
     <SearchView
         android:id="@+id/searchView"
         style="@style/MySearchViewStyle"
@@ -80,10 +72,21 @@
         android:background="@drawable/search_view_background"
         android:iconifiedByDefault="false"
         android:queryHint="Search"
-        app:layout_constraintBottom_toTopOf="@+id/mainRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/notes" />
+
+    <TextView
+        android:id="@+id/pinned"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:text="Pinned"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
     <ImageView
         android:id="@+id/addTaskBtn_main"
@@ -126,13 +129,13 @@
         android:id="@+id/mainRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+        app:layout_constraintTop_toBottomOf="@+id/pinned" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
