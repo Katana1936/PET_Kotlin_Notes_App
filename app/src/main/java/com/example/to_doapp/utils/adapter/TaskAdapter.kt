@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.to_doapp.R
 import com.example.to_doapp.databinding.EachTodoItemBinding
@@ -15,6 +16,7 @@ import java.util.Date
 class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
     private val TAG = "TaskAdapter"
     private var listener: TaskAdapterInterface? = null
+    var swipedPosition: Int = RecyclerView.NO_POSITION
     var isSelectionMode = false
     fun setListener(listener: TaskAdapterInterface) {
         this.listener = listener
@@ -52,6 +54,17 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                 }
                 binding.deleteTask.setOnClickListener {
                     //listener?.onDeleteItemClicked(this , position)
+                }
+                if (swipedPosition == position) {
+                    binding.trashIcon.visibility = View.VISIBLE
+                } else {
+                    binding.trashIcon.visibility = View.GONE
+                }
+
+                binding.trashIcon.setOnClickListener {
+                    listener?.onDeleteItemClicked(list[position], position)
+                    notifyItemRemoved(position)
+                    swipedPosition = RecyclerView.NO_POSITION
                 }
             }
         }
@@ -100,4 +113,7 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         list.removeAt(position)
         notifyItemRemoved(position)
     }
+
+
+
 }

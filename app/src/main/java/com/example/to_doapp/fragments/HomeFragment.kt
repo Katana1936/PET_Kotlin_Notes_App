@@ -140,11 +140,13 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             }
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                taskAdapter.removeItem(position)
+                taskAdapter.swipedPosition = position
+                taskAdapter.notifyItemChanged(position)
             }
         }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(binding.mainRecyclerView)
+
     }
     private fun filterTasks(query: String) {
         val filteredList = toDoItemList.filter { it.task.contains(query, ignoreCase = true) }
