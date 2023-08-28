@@ -1,6 +1,8 @@
 package com.example.to_doapp.fragments
 
 import android.annotation.SuppressLint
+import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,10 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.example.to_doapp.R
 import com.example.to_doapp.databinding.FragmentHomeBinding
 import com.example.to_doapp.utils.adapter.TaskAdapter
 import com.example.to_doapp.utils.model.ToDoData
@@ -23,6 +27,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlin.math.min
 
 class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener,
     TaskAdapter.TaskAdapterInterface {
@@ -135,18 +140,53 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             }
         })
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
                 return false
             }
+
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                taskAdapter.swipedPosition = position
-                taskAdapter.notifyItemChanged(position)
+                taskAdapter.removeItem(position)
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                val itemView = viewHolder.itemView
+                val itemHeight = itemView.bottom - itemView.top
+                val icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_baseline_delete_24)!!
+                val iconMargin = (itemHeight - icon.intrinsicHeight) / 2
+                val iconTop = itemView.top + (itemHeight - icon.intrinsicHeight) / 2
+                val iconBottom = iconTop + icon.intrinsicHeight
+                // Смещение иконки и увеличение размера
+                val iconLeft = itemView.right - iconMargin - icon.intrinsicWidth
+                val iconRight = itemView.right - iconMargin
+                val scaleFactor = 1f + min(dX / itemView.width.toFloat(), 1f) * 0.2f
+                icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                // Рисуем фон и иконку
+                c.save()
+                c.scale(scaleFactor, scaleFactor, itemView.right.toFloat(), itemView.top + itemHeight / 2.toFloat())
+                c.clipRect((itemView.right + dX).toInt(), itemView.top, itemView.right, itemView.bottom)
+                c.drawColor(Color.WHITE)
+                icon.draw(c)
+
+                c.restore()
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             }
         }
+
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(binding.mainRecyclerView)
-
     }
     private fun filterTasks(query: String) {
         val filteredList = toDoItemList.filter { it.task.contains(query, ignoreCase = true) }

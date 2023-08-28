@@ -16,7 +16,7 @@ import java.util.Date
 class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
     private val TAG = "TaskAdapter"
     private var listener: TaskAdapterInterface? = null
-    var swipedPosition: Int = RecyclerView.NO_POSITION
+    private var swipedPosition: Int = RecyclerView.NO_POSITION
     var isSelectionMode = false
     fun setListener(listener: TaskAdapterInterface) {
         this.listener = listener
@@ -54,17 +54,6 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                 }
                 binding.deleteTask.setOnClickListener {
                     //listener?.onDeleteItemClicked(this , position)
-                }
-                if (swipedPosition == position) {
-                    binding.trashIcon.visibility = View.VISIBLE
-                } else {
-                    binding.trashIcon.visibility = View.GONE
-                }
-
-                binding.trashIcon.setOnClickListener {
-                    listener?.onDeleteItemClicked(list[position], position)
-                    notifyItemRemoved(position)
-                    swipedPosition = RecyclerView.NO_POSITION
                 }
             }
         }
