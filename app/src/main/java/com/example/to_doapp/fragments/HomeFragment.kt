@@ -28,10 +28,9 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlin.math.min
 
 class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener,
-    TaskAdapter.TaskAdapterInterface {
+    TaskAdapter.TaskAdapterInterface, PinnedTaskAdapter.PinnedTaskAdapterInterface {
     private val TAG = "HomeFragment"
     private lateinit var binding: FragmentHomeBinding
     private lateinit var database: DatabaseReference
@@ -112,6 +111,10 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 pinnedTaskAdapter.updateList(pinnedToDoItemList)
                 taskAdapter.notifyDataSetChanged()
                 //pinnedTaskAdapter.notifyDataSetChanged()
+                val hasPinnedItem = pinnedToDoItemList.isNotEmpty()
+                binding.pinned.visibility = if (hasPinnedItem) View.VISIBLE else View.GONE
+                val hasRecentItem = toDoItemList.isNotEmpty()
+                binding.recent.visibility = if (hasRecentItem) View.VISIBLE else View.GONE
             }
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
@@ -129,6 +132,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         pinnedToDoItemList = mutableListOf()
         taskAdapter = TaskAdapter(toDoItemList)
         taskAdapter.setListener(this)
+        pinnedTaskAdapter.setListener(this)
         binding.mainRecyclerView.adapter = taskAdapter
         taskAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {

@@ -100,8 +100,8 @@ class PinnedTaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.
     fun removeItem(position: Int): ToDoData {
         val item = list[position]
         list.removeAt(position)
-        //notifyItemRemoved(position)
         listener?.onDeleteItemClicked(item, position)
+        notifyItemRemoved(position)
         return item
     }
     fun addItem(item: ToDoData) {
