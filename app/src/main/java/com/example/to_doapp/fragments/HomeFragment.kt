@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.to_doapp.R
 import com.example.to_doapp.databinding.FragmentHomeBinding
+import com.example.to_doapp.utils.adapter.PinnedTaskAdapter
 import com.example.to_doapp.utils.adapter.TaskAdapter
 import com.example.to_doapp.utils.model.ToDoData
 import com.google.android.material.textfield.TextInputEditText
@@ -40,8 +41,8 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     private lateinit var authId: String
     private lateinit var taskAdapter: TaskAdapter
     private var toDoItemList: MutableList<ToDoData> = mutableListOf()
+    val pinnedTaskAdapter = PinnedTaskAdapter(mutableListOf())
     private var isSearchViewEnabled = true
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -155,7 +156,10 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                         taskAdapter.removeItem(position)
                     }
                     ItemTouchHelper.RIGHT -> {
-                        // Ваш код для "прикрепления" элемента
+                        //
+                        val item = taskAdapter.removeItem(position)
+                        pinnedTaskAdapter.addItem(item)
+                        //
                     }
                 }
             }

@@ -12,12 +12,12 @@ import com.example.to_doapp.utils.model.ToDoData
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
-    private val TAG = "TaskAdapter"
-    private var listener: TaskAdapterInterface? = null
+class PinnedTaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapter<PinnedTaskAdapter.TaskViewHolder>() {
+    private val TAG = "PinnedTaskAdapter"
+    private var listener: PinnedTaskAdapterInterface? = null
     private var swipedPosition: Int = RecyclerView.NO_POSITION
     var isSelectionMode = false
-    fun setListener(listener: TaskAdapterInterface) {
+    fun setListener(listener: PinnedTaskAdapterInterface) {
         this.listener = listener
     }
     class TaskViewHolder(val binding: EachTodoItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -91,7 +91,7 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         }
         notifyDataSetChanged()
     }
-    interface TaskAdapterInterface {
+    interface PinnedTaskAdapterInterface {
         fun onDeleteItemClicked(toDoData: ToDoData, position: Int)
         fun onEditItemClicked(toDoData: ToDoData, position: Int)
     }
@@ -105,5 +105,4 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         list.add(item)
         notifyItemInserted(list.size - 1)
     }
-
 }

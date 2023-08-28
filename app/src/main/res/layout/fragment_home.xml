@@ -85,6 +85,7 @@
         android:text="Pinned"
         android:textSize="20dp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
@@ -124,18 +125,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainRecyclerView" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/PinnedRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/mainRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pinned" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mainRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pinned" />
+        app:layout_constraintTop_toBottomOf="@+id/PinnedRecyclerView" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
