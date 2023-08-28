@@ -2,7 +2,6 @@ package com.example.to_doapp.fragments
 
 import android.annotation.SuppressLint
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -41,6 +40,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     private lateinit var authId: String
     private lateinit var taskAdapter: TaskAdapter
     private var toDoItemList: MutableList<ToDoData> = mutableListOf()
+    private var pinnedToDoItemList: MutableList<ToDoData> = mutableListOf()
     val pinnedTaskAdapter = PinnedTaskAdapter(mutableListOf())
     private var isSearchViewEnabled = true
     override fun onCreateView(
@@ -156,10 +156,8 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                         taskAdapter.removeItem(position)
                     }
                     ItemTouchHelper.RIGHT -> {
-                        //
                         val item = taskAdapter.removeItem(position)
                         pinnedTaskAdapter.addItem(item)
-                        //
                     }
                 }
             }
@@ -195,13 +193,70 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(binding.mainRecyclerView)
+        //
+        binding.PinnedRecyclerView.setHasFixedSize(true)
+        binding.PinnedRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.PinnedRecyclerView.adapter = pinnedTaskAdapter
+        val pinnedItemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                when (direction) {
+                    ItemTouchHelper.LEFT -> {
+                        taskAdapter.removeItem(position)
+                    }
+                }
+            }
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                val itemView = viewHolder.itemView
+                val itemHeight = itemView.bottom - itemView.top
+                val icon: Drawable
+                val iconMargin: Int
+                if (dX > 0) {
+                    icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_pin)!!
+                    iconMargin = (itemHeight - icon.intrinsicHeight) / 2
+                    val iconLeft = itemView.left + iconMargin
+                    val iconRight = itemView.left + iconMargin + icon.intrinsicWidth
+                    icon.setBounds(iconLeft, itemView.top + iconMargin, iconRight, itemView.top + iconMargin + icon.intrinsicHeight)
+                } else {
+                    icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_baseline_delete_24)!!
+                    iconMargin = (itemHeight - icon.intrinsicHeight) / 2
+                    val iconLeft = itemView.right - iconMargin - icon.intrinsicWidth
+                    val iconRight = itemView.right - iconMargin
+                    icon.setBounds(iconLeft, itemView.top + iconMargin, iconRight, itemView.top + iconMargin + icon.intrinsicHeight)
+                }
+                icon.draw(c)
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            }
+        }
+        val pinnedItemTouchHelper = ItemTouchHelper(pinnedItemTouchHelperCallback)
+        pinnedItemTouchHelper.attachToRecyclerView(binding.PinnedRecyclerView)
+
+
     }
     private fun filterTasks(query: String) {
         val filteredList = toDoItemList.filter { it.task.contains(query, ignoreCase = true) }
         taskAdapter.updateList(filteredList)
+        //
+        val filteredPinnedList = pinnedToDoItemList.filter { it.task.contains(query, ignoreCase = true) }
+        pinnedTaskAdapter.updateList(filteredPinnedList)
     }
     private fun updateNoteCount() {
-        val itemCount = taskAdapter.itemCount
+        val itemCount = taskAdapter.itemCount + pinnedTaskAdapter.itemCount
         binding.noteNum.text = when (itemCount) {
             0 -> "No Notes"
             1 -> "1 Note"
