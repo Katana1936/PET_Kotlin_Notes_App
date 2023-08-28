@@ -13,6 +13,4 @@
 
     <color name="default_background">#000000</color>
     <color name="selected_background">#ffffff</color>
-
-    <color name="red">#ffffff</color>
 </resources>

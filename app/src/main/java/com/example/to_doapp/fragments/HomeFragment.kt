@@ -147,12 +147,10 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             ): Boolean {
                 return false
             }
-
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 taskAdapter.removeItem(position)
             }
-
             override fun onChildDraw(
                 c: Canvas,
                 recyclerView: RecyclerView,
@@ -168,23 +166,19 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 val iconMargin = (itemHeight - icon.intrinsicHeight) / 2
                 val iconTop = itemView.top + (itemHeight - icon.intrinsicHeight) / 2
                 val iconBottom = iconTop + icon.intrinsicHeight
-                // Смещение иконки и увеличение размера
                 val iconLeft = itemView.right - iconMargin - icon.intrinsicWidth
                 val iconRight = itemView.right - iconMargin
                 val scaleFactor = 1f + min(dX / itemView.width.toFloat(), 1f) * 0.2f
                 icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-                // Рисуем фон и иконку
                 c.save()
                 c.scale(scaleFactor, scaleFactor, itemView.right.toFloat(), itemView.top + itemHeight / 2.toFloat())
                 c.clipRect((itemView.right + dX).toInt(), itemView.top, itemView.right, itemView.bottom)
-                c.drawColor(Color.WHITE)
+                c.drawColor(Color.parseColor("#f2f1f7"))
                 icon.draw(c)
-
                 c.restore()
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             }
         }
-
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(binding.mainRecyclerView)
     }
