@@ -95,15 +95,23 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             @SuppressLint("NotifyDataSetChanged")
             override fun onDataChange(snapshot: DataSnapshot) {
                 toDoItemList.clear()
+                pinnedToDoItemList.clear()
                 for (taskSnapshot in snapshot.children) {
                     val taskId = taskSnapshot.key ?: continue
                     val task = taskSnapshot.child("task").getValue(String::class.java) ?: ""
                     val timestamp = taskSnapshot.child("timestamp").getValue(Long::class.java) ?: continue
-                    val todoTask = ToDoData(taskId, task, timestamp)
-                    toDoItemList.add(todoTask)
+                    val isPinned = taskSnapshot.child("isPinned").getValue(Boolean::class.java) ?: false
+                    val todoTask = ToDoData(taskId, task, timestamp, isPinned)
+                    if (isPinned) {
+                        pinnedToDoItemList.add(todoTask)
+                    } else {
+                        toDoItemList.add(todoTask)
+                    }
                 }
                 taskAdapter.updateList(toDoItemList)
+                pinnedTaskAdapter.updateList(pinnedToDoItemList)
                 taskAdapter.notifyDataSetChanged()
+                //pinnedTaskAdapter.notifyDataSetChanged()
             }
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
@@ -118,6 +126,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         binding.mainRecyclerView.setHasFixedSize(true)
         binding.mainRecyclerView.layoutManager = LinearLayoutManager(context)
         toDoItemList = mutableListOf()
+        pinnedToDoItemList = mutableListOf()
         taskAdapter = TaskAdapter(toDoItemList)
         taskAdapter.setListener(this)
         binding.mainRecyclerView.adapter = taskAdapter
@@ -141,6 +150,19 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 return true
             }
         })
+
+
+
+
+
+
+
+
+
+
+
+
+        //main
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -156,8 +178,10 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                         taskAdapter.removeItem(position)
                     }
                     ItemTouchHelper.RIGHT -> {
-                        val item = taskAdapter.removeItem(position)
+                        val item = taskAdapter.localRemoveItem(position)
+                        item.isPinned = true
                         pinnedTaskAdapter.addItem(item)
+                        updateTaskInFirebase(item)
                     }
                 }
             }
@@ -193,11 +217,22 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(binding.mainRecyclerView)
-        //
+
+
+
+
+
+
+
+
+
+
+
+        //pinned
         binding.PinnedRecyclerView.setHasFixedSize(true)
         binding.PinnedRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.PinnedRecyclerView.adapter = pinnedTaskAdapter
-        val pinnedItemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+        val pinnedItemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -209,7 +244,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 val position = viewHolder.adapterPosition
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
-                        taskAdapter.removeItem(position)
+                        pinnedTaskAdapter.removeItem(position)
                     }
                 }
             }
@@ -245,13 +280,10 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         }
         val pinnedItemTouchHelper = ItemTouchHelper(pinnedItemTouchHelperCallback)
         pinnedItemTouchHelper.attachToRecyclerView(binding.PinnedRecyclerView)
-
-
     }
     private fun filterTasks(query: String) {
         val filteredList = toDoItemList.filter { it.task.contains(query, ignoreCase = true) }
         taskAdapter.updateList(filteredList)
-        //
         val filteredPinnedList = pinnedToDoItemList.filter { it.task.contains(query, ignoreCase = true) }
         pinnedTaskAdapter.updateList(filteredPinnedList)
     }
@@ -265,10 +297,11 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     }
     override fun saveTask(todoTask: String, todoEdit: TextInputEditText) {
         val taskId = database.push().key ?: return
-        val newTask = ToDoData(taskId, todoTask)
+        val newTask = ToDoData(taskId, todoTask, isPinned = false)
         database.child(taskId).setValue(newTask).addOnCompleteListener {
             if (it.isSuccessful) {
                 Toast.makeText(context, "Task Added Successfully", Toast.LENGTH_SHORT).show()
+                taskAdapter.addItem(newTask)
                 todoEdit.text = null
             } else {
                 Toast.makeText(context, it.exception.toString(), Toast.LENGTH_SHORT).show()
@@ -279,6 +312,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     override fun updateTask(toDoData: ToDoData, todoEdit: TextInputEditText) {
         val map = HashMap<String, Any>()
         map[toDoData.taskId] = toDoData.task
+        map["isPinned"] = toDoData.isPinned
         database.updateChildren(map).addOnCompleteListener {
             if (it.isSuccessful) {
                 Toast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT).show()
@@ -288,6 +322,22 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             frag!!.dismiss()
         }
     }
+
+    fun updateTask(toDoData: ToDoData) {
+        val map = HashMap<String, Any>()
+        map[toDoData.taskId] = toDoData.task
+        map["isPinned"] = toDoData.isPinned
+        database.updateChildren(map).addOnCompleteListener {
+            if (it.isSuccessful) {
+                Toast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, it.exception.toString(), Toast.LENGTH_SHORT).show()
+            }
+            frag!!.dismiss()
+        }
+    }
+
+
     override fun onDeleteItemClicked(toDoData: ToDoData, position: Int) {
         Log.d(TAG, "Deleting task with id: ${toDoData.taskId}")
         database.child(toDoData.taskId).removeValue().addOnCompleteListener {
@@ -308,4 +358,19 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             ToDoDialogFragment.TAG
         )
     }
+     fun updateTaskInFirebase(toDoData: ToDoData) {
+        val taskMap = mapOf(
+            "task" to toDoData.task,
+            "isPinned" to toDoData.isPinned,
+            "timestamp" to toDoData.timestamp
+        )
+        database.child(toDoData.taskId).updateChildren(taskMap).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(context, "Task updated successfully in Firebase", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Failed to update task in Firebase", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 }

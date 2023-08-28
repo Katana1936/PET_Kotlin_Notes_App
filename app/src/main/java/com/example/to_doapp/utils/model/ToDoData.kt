@@ -4,6 +4,7 @@ data class ToDoData(
     val taskId: String,
     var task: String,
     val timestamp: Long = System.currentTimeMillis(),
-    var isSelected: Boolean = false
+    var isSelected: Boolean = false,
+    var isPinned: Boolean = false
 )
 

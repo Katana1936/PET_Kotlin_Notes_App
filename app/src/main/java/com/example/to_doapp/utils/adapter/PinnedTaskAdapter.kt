@@ -5,9 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.to_doapp.R
 import com.example.to_doapp.databinding.EachTodoItemBinding
+import com.example.to_doapp.fragments.HomeFragment
 import com.example.to_doapp.utils.model.ToDoData
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -95,14 +97,16 @@ class PinnedTaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.
         fun onDeleteItemClicked(toDoData: ToDoData, position: Int)
         fun onEditItemClicked(toDoData: ToDoData, position: Int)
     }
-    fun removeItem(position: Int) {
+    fun removeItem(position: Int): ToDoData {
         val item = list[position]
-        listener?.onDeleteItemClicked(item, position)
         list.removeAt(position)
-        notifyItemRemoved(position)
+        //notifyItemRemoved(position)
+        listener?.onDeleteItemClicked(item, position)
+        return item
     }
     fun addItem(item: ToDoData) {
         list.add(item)
-        notifyItemInserted(list.size - 1)
+        notifyItemInserted(list.size + 1)
+        Log.d(TAG, "Item added. Current list: $list")
     }
 }
