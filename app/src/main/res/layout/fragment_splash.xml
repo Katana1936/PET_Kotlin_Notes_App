@@ -8,16 +8,14 @@
     tools:context=".fragments.SplashFragment">
 
 
-    <ImageView
-        android:id="@+id/gifImageView"
-        android:layout_width="400dp"
-        android:layout_height="300dp"
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <ImageView
         android:id="@+id/imageView3"
@@ -32,23 +30,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/inter_extra_bold"
-        android:gravity="center_horizontal"
-        android:text="Notes"
-        android:textColor="@color/black"
-        android:textSize="60sp"
-        android:textStyle="italic"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.331" />
 
     <TextView
         android:id="@+id/textView_top"
@@ -59,8 +40,7 @@
         android:text=" Notes"
         android:textColor="@color/teal_700"
         android:textSize="60sp"
-        android:textStyle="italic"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

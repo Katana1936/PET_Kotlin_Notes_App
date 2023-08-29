@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f2f1f7"
+    android:background="#F7F7F7"
     tools:context=".fragments.HomeFragment">
 
     <TextView
@@ -14,6 +14,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="15dp"
+        android:fontFamily="@font/inter_extra_bold"
         android:text="Notes"
         android:textSize="40dp"
         android:textStyle="bold"
@@ -28,8 +29,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:text="Edit"
-        android:textSize="20dp"
-        android:textColor="#FFA500"
+        android:textSize="22dp"
+        android:textColor="#AACCE8"
         app:layout_constraintBottom_toTopOf="@+id/searchView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,10 +42,10 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:text="Done"
-        android:textSize="20dp"
-        android:textColor="#FFA500"
-        android:visibility="gone"
+        android:textSize="23dp"
         android:textStyle="bold"
+        android:textColor="#AACCE8"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/searchView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -56,8 +57,8 @@
         android:layout_marginStart="15dp"
         android:layout_marginBottom="15dp"
         android:text="Move All"
-        android:textColor="#FFA500"
-        android:textSize="18dp"
+        android:textColor="#AACCE8"
+        android:textSize="22dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -96,6 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
+        android:fontFamily="@font/new_bolt"
         android:text="Recent"
         android:textSize="20dp"
         android:textStyle="bold"
@@ -121,8 +123,8 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
         android:text="Delete All"
-        android:textColor="#FFA500"
-        android:textSize="18dp"
+        android:textColor="#AACCE8"
+        android:textSize="22dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
