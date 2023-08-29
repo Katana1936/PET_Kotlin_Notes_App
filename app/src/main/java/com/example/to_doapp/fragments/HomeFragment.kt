@@ -292,13 +292,22 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         pinnedTaskAdapter.updateList(filteredPinnedList)
     }
     private fun updateNoteCount() {
-        val itemCount = taskAdapter.itemCount + pinnedTaskAdapter.itemCount
+        val taskItemCount = toDoItemList.size
+        val pinnedTaskItemCount = pinnedToDoItemList.size
+
+        // Вывод в логи
+        Log.e("NoteCount", "Task item count: $taskItemCount")
+        Log.e("NoteCount", "Pinned task item count: $pinnedTaskItemCount")
+
+        val itemCount = taskItemCount + pinnedTaskItemCount // direct use of list sizes
+        Log.e("NoteCount", "Total note count: $itemCount")
         binding.noteNum.text = when (itemCount) {
             0 -> "No Notes"
             1 -> "1 Note"
             else -> "$itemCount Notes"
         }
     }
+
     override fun saveTask(todoTask: String, todoEdit: TextInputEditText) {
         val taskId = database.push().key ?: return
         val newTask = ToDoData(taskId, todoTask, isPinned = false)
@@ -307,6 +316,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 Toast.makeText(context, "Task Added Successfully", Toast.LENGTH_SHORT).show()
                 taskAdapter.addItem(newTask)
                 todoEdit.text = null
+                updateNoteCount()
             } else {
                 Toast.makeText(context, it.exception.toString(), Toast.LENGTH_SHORT).show()
             }
@@ -347,6 +357,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         database.child(toDoData.taskId).removeValue().addOnCompleteListener {
             if (it.isSuccessful) {
                 Log.d(TAG, "Task deleted successfully")
+                updateNoteCount()
             } else {
                 Log.e(TAG, "Failed to delete task", it.exception)
             }
@@ -371,6 +382,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         database.child(toDoData.taskId).updateChildren(taskMap).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Toast.makeText(context, "Task updated successfully in Firebase", Toast.LENGTH_SHORT).show()
+                updateNoteCount()
             } else {
                 Toast.makeText(context, "Failed to update task in Firebase", Toast.LENGTH_SHORT).show()
             }

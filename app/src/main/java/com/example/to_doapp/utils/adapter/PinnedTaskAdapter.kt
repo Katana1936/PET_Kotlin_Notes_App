@@ -107,7 +107,7 @@ class PinnedTaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.
     }
     fun addItem(item: ToDoData) {
         list.add(item)
-        notifyItemInserted(list.size + 1)
+        notifyItemInserted(list.size - 1)
         Log.d(TAG, "Item added. Current list: $list")
     }
 }

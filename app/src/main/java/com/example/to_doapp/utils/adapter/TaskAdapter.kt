@@ -111,7 +111,7 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
     }
     fun addItem(item: ToDoData) {
         list.add(item)
-        notifyItemInserted(list.size + 1)
+        notifyItemInserted(list.size - 1)
     }
 
 }
