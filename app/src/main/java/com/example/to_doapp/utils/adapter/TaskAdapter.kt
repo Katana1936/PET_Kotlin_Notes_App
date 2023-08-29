@@ -54,6 +54,7 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                 binding.deleteTask.setOnClickListener {
                     //listener?.onDeleteItemClicked(this , position)
                 }
+                binding.icPinImageView.visibility= View.GONE
             }
         }
     }

@@ -56,6 +56,7 @@ class PinnedTaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.
                 binding.deleteTask.setOnClickListener {
                     //listener?.onDeleteItemClicked(this , position)
                 }
+                binding.icPinImageView.visibility= View.VISIBLE
             }
         }
     }
