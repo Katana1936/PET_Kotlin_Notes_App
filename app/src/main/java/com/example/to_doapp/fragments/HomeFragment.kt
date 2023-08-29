@@ -294,12 +294,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     private fun updateNoteCount() {
         val taskItemCount = toDoItemList.size
         val pinnedTaskItemCount = pinnedToDoItemList.size
-
-        // Вывод в логи
-        Log.e("NoteCount", "Task item count: $taskItemCount")
-        Log.e("NoteCount", "Pinned task item count: $pinnedTaskItemCount")
-
-        val itemCount = taskItemCount + pinnedTaskItemCount // direct use of list sizes
+        val itemCount = taskItemCount + pinnedTaskItemCount
         Log.e("NoteCount", "Total note count: $itemCount")
         binding.noteNum.text = when (itemCount) {
             0 -> "No Notes"
