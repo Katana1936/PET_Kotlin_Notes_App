@@ -123,31 +123,31 @@
         android:id="@+id/bottom_panel"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="#E0E0E0"
+        android:background="@drawable/rounded_top_corners_for_the_bottom_panel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/note_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
         android:text="Notes"
         android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bottom_panel" />
 
     <ImageView
         android:id="@+id/addTaskBtn_main"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
         android:src="@drawable/ic_document_add_svgrepo_com"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bottom_panel" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/PinnedRecyclerView"
