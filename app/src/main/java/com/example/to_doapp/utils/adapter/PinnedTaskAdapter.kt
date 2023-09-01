@@ -62,7 +62,6 @@ class PinnedTaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.
     }
     fun toggleSelection(position: Int) {
         list[position].isSelected = !list[position].isSelected
-        Log.d(TAG, "Toggled selection for position $position: ${list[position].isSelected}")
         notifyItemChanged(position)
     }
     @SuppressLint("NotifyDataSetChanged")
@@ -108,6 +107,5 @@ class PinnedTaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.
     fun addItem(item: ToDoData) {
         list.add(item)
         notifyItemInserted(list.size - 1)
-        Log.d(TAG, "Item added. Current list: $list")
     }
 }

@@ -110,7 +110,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 taskAdapter.updateList(toDoItemList)
                 pinnedTaskAdapter.updateList(pinnedToDoItemList)
                 taskAdapter.notifyDataSetChanged()
-                //pinnedTaskAdapter.notifyDataSetChanged()
+                pinnedTaskAdapter.notifyDataSetChanged()
                 val hasPinnedItem = pinnedToDoItemList.isNotEmpty()
                 binding.pinned.visibility = if (hasPinnedItem) View.VISIBLE else View.GONE
                 val hasRecentItem = toDoItemList.isNotEmpty()
@@ -129,6 +129,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         binding.mainRecyclerView.setHasFixedSize(true)
         binding.mainRecyclerView.layoutManager = LinearLayoutManager(context)
         toDoItemList = mutableListOf()
+        // зачем ?
         pinnedToDoItemList = mutableListOf()
         taskAdapter = TaskAdapter(toDoItemList)
         taskAdapter.setListener(this)
@@ -292,9 +293,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         pinnedTaskAdapter.updateList(filteredPinnedList)
     }
     private fun updateNoteCount() {
-        val taskItemCount = toDoItemList.size
-        val pinnedTaskItemCount = pinnedToDoItemList.size
-        val itemCount = taskItemCount + pinnedTaskItemCount
+        val itemCount = toDoItemList.size + pinnedToDoItemList.size
         Log.e("NoteCount", "Total note count: $itemCount")
         binding.noteNum.text = when (itemCount) {
             0 -> "No Notes"
@@ -302,7 +301,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             else -> "$itemCount Notes"
         }
     }
-
     override fun saveTask(todoTask: String, todoEdit: TextInputEditText) {
         val taskId = database.push().key ?: return
         val newTask = ToDoData(taskId, todoTask, isPinned = false)
@@ -348,13 +346,9 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
 
 
     override fun onDeleteItemClicked(toDoData: ToDoData, position: Int) {
-        Log.d(TAG, "Deleting task with id: ${toDoData.taskId}")
         database.child(toDoData.taskId).removeValue().addOnCompleteListener {
             if (it.isSuccessful) {
-                Log.d(TAG, "Task deleted successfully")
                 updateNoteCount()
-            } else {
-                Log.e(TAG, "Failed to delete task", it.exception)
             }
         }
     }

@@ -60,7 +60,6 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
     }
     fun toggleSelection(position: Int) {
         list[position].isSelected = !list[position].isSelected
-        Log.d(TAG, "Toggled selection for position $position: ${list[position].isSelected}")
         notifyItemChanged(position)
     }
     @SuppressLint("NotifyDataSetChanged")
@@ -113,5 +112,4 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         list.add(item)
         notifyItemInserted(list.size - 1)
     }
-
 }
