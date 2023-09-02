@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -57,6 +58,12 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
+
+
+
         init()
         getTaskFromFirebase()
         binding.addTaskBtnMain.setOnClickListener {
@@ -69,6 +76,8 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 ToDoDialogFragment.TAG
             )
         }
+        val rootRef = FirebaseDatabase.getInstance().getReference("Tasks")
+
         binding.Edit.setOnClickListener { toggleEditMode() }
         binding.Done.setOnClickListener { toggleEditMode() }
         binding.searchView.setOnTouchListener { _, _ -> !isSearchViewEnabled }
@@ -111,6 +120,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                     } else {
                         toDoItemList.add(todoTask)
                     }
+                    removeAllPinnedTasks()
                 }
                 taskAdapter.updateList(toDoItemList)
                 pinnedTaskAdapter.updateList(pinnedToDoItemList)
@@ -216,12 +226,12 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                     val iconRight = itemView.left + iconMargin + icon.intrinsicWidth
                     val fraction = abs(dX) / itemView.width
                     val defaultColor = Color.parseColor("#e4e3e9")
-                    val finalColor = Color.YELLOW
+                    val finalColor = Color.BLUE
                     val color = evaluator.evaluate(min(fraction / swipeThreshold, 1f), defaultColor, finalColor) as Int
                     icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
                     icon.setBounds(iconLeft, itemView.top + iconMargin, iconRight, itemView.top + iconMargin + icon.intrinsicHeight)
                 } else {
-                    icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_baseline_delete_24)!!
+                    icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_trash)!!
                     iconMargin = (itemHeight - icon.intrinsicHeight) / 2
                     val iconLeft = itemView.right - iconMargin - icon.intrinsicWidth
                     val iconRight = itemView.right - iconMargin
@@ -293,7 +303,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                     val iconRight = itemView.left + iconMargin + icon.intrinsicWidth
                     icon.setBounds(iconLeft, itemView.top + iconMargin, iconRight, itemView.top + iconMargin + icon.intrinsicHeight)
                 } else {
-                    icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_baseline_delete_24)!!
+                    icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_trash)!!
                     iconMargin = (itemHeight - icon.intrinsicHeight) / 2
                     val iconLeft = itemView.right - iconMargin - icon.intrinsicWidth
                     val iconRight = itemView.right - iconMargin
@@ -368,6 +378,25 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             frag!!.dismiss()
         }
     }
+    private fun removeAllPinnedTasks() {
+        val rootRef = FirebaseDatabase.getInstance().getReference("Tasks").child(authId)
+        rootRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (childSnapshot in dataSnapshot.children) {
+                    val objectKey = childSnapshot.key
+                    if (objectKey != null && childSnapshot.hasChild("pinned")) {
+                        rootRef.child(objectKey).child("pinned").removeValue()
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Toast.makeText(context, databaseError.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+
 
 
     override fun onDeleteItemClicked(toDoData: ToDoData, position: Int) {

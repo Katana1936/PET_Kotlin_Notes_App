@@ -75,10 +75,27 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
     }
     @SuppressLint("NotifyDataSetChanged")
     fun updateList(newList: List<ToDoData>) {
-        list = newList.toMutableList()
+        Log.d("TEST", "Updating list. Old List Size: ${list.size}, New List Size: ${newList.size}")
+
+        val oldItemsIterator = list.iterator()
+        while (oldItemsIterator.hasNext()) {
+            val oldItem = oldItemsIterator.next()
+            if (newList.none { it.taskId == oldItem.taskId}) {
+                oldItemsIterator.remove()
+            }
+        }
+        for (newItem in newList) {
+            val existingItemIndex = list.indexOfFirst { it.taskId== newItem.taskId }
+            if (existingItemIndex == -1) {
+                list.add(newItem)
+            } else {
+                list[existingItemIndex] = newItem
+            }
+        }
         list.forEach { it.isSelected = false }
         notifyDataSetChanged()
     }
+
     @SuppressLint("NotifyDataSetChanged")
     fun deleteSelectedItems() {
         val iterator = list.iterator()
@@ -105,11 +122,18 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
     fun localRemoveItem(position: Int): ToDoData {
         val item = list[position]
         list.removeAt(position)
-        //notifyItemRemoved(position)
         return item
     }
     fun addItem(item: ToDoData) {
-        list.add(item)
-        notifyItemInserted(list.size - 1)
+        val existingItemIndex = list.indexOfFirst { it.taskId == item.taskId }
+
+        if (existingItemIndex == -1) {
+            list.add(item)
+            notifyItemInserted(list.size - 1)
+        } else {
+            list[existingItemIndex] = item
+            notifyItemChanged(existingItemIndex)
+        }
     }
+
 }
