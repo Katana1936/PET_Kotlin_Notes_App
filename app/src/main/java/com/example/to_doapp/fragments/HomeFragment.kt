@@ -208,7 +208,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 val icon: Drawable
                 val iconMargin: Int
                 val evaluator = ArgbEvaluator()
-                val swipeThreshold = 0.5f // Настроить по желанию
+                val swipeThreshold = 0.9f
                 if (dX > 0) {
                     icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_pin)!!
                     iconMargin = (itemHeight - icon.intrinsicHeight) / 2
@@ -220,15 +220,13 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                     iconMargin = (itemHeight - icon.intrinsicHeight) / 2
                     val iconLeft = itemView.right - iconMargin - icon.intrinsicWidth
                     val iconRight = itemView.right - iconMargin
-                    // Интерполируем цвет
                     val fraction = abs(dX) / itemView.width
-                    val defaultColor = Color.GRAY // Исходный цвет
-                    val finalColor = Color.RED  // Цвет при полном свайпе
+                    val defaultColor = Color.parseColor("#e4e3e9")
+                    val finalColor = Color.RED
                     val color = evaluator.evaluate(min(fraction / swipeThreshold, 1f), defaultColor, finalColor) as Int
                     icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
                     icon.setBounds(iconLeft, itemView.top + iconMargin, iconRight, itemView.top + iconMargin + icon.intrinsicHeight)
                 }
-
                 icon.draw(c)
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             }
@@ -281,6 +279,8 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 val itemHeight = itemView.bottom - itemView.top
                 val icon: Drawable
                 val iconMargin: Int
+                val evaluator = ArgbEvaluator()
+                val swipeThreshold = 0.9f
                 if (dX > 0) {
                     icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_pin)!!
                     iconMargin = (itemHeight - icon.intrinsicHeight) / 2
@@ -292,6 +292,11 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                     iconMargin = (itemHeight - icon.intrinsicHeight) / 2
                     val iconLeft = itemView.right - iconMargin - icon.intrinsicWidth
                     val iconRight = itemView.right - iconMargin
+                    val fraction = abs(dX) / itemView.width
+                    val defaultColor = Color.parseColor("#e4e3e9")
+                    val finalColor = Color.RED
+                    val color = evaluator.evaluate(min(fraction / swipeThreshold, 1f), defaultColor, finalColor) as Int
+                    icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
                     icon.setBounds(iconLeft, itemView.top + iconMargin, iconRight, itemView.top + iconMargin + icon.intrinsicHeight)
                 }
                 icon.draw(c)
