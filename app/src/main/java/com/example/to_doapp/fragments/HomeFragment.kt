@@ -129,7 +129,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         binding.mainRecyclerView.setHasFixedSize(true)
         binding.mainRecyclerView.layoutManager = LinearLayoutManager(context)
         toDoItemList = mutableListOf()
-        // зачем ?
         pinnedToDoItemList = mutableListOf()
         taskAdapter = TaskAdapter(toDoItemList)
         taskAdapter.setListener(this)
