@@ -1,7 +1,10 @@
 package com.example.to_doapp.fragments
 
+import android.animation.ArgbEvaluator
 import android.annotation.SuppressLint
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -28,6 +31,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlin.math.abs
+import kotlin.math.min
 
 class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener,
     TaskAdapter.TaskAdapterInterface, PinnedTaskAdapter.PinnedTaskAdapterInterface {
@@ -112,9 +117,9 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 taskAdapter.notifyDataSetChanged()
                 pinnedTaskAdapter.notifyDataSetChanged()
                 val hasPinnedItem = pinnedToDoItemList.isNotEmpty()
-                binding.pinned.visibility = if (hasPinnedItem) View.VISIBLE else View.INVISIBLE
+                binding.pinned.visibility = if (hasPinnedItem) View.VISIBLE else View.GONE
                 val hasRecentItem = toDoItemList.isNotEmpty()
-                binding.recent.visibility = if (hasRecentItem) View.VISIBLE else View.INVISIBLE
+                binding.recent.visibility = if (hasRecentItem) View.VISIBLE else View.GONE
             }
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
@@ -202,6 +207,8 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 val itemHeight = itemView.bottom - itemView.top
                 val icon: Drawable
                 val iconMargin: Int
+                val evaluator = ArgbEvaluator()
+                val swipeThreshold = 0.5f // Настроить по желанию
                 if (dX > 0) {
                     icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_pin)!!
                     iconMargin = (itemHeight - icon.intrinsicHeight) / 2
@@ -213,8 +220,15 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                     iconMargin = (itemHeight - icon.intrinsicHeight) / 2
                     val iconLeft = itemView.right - iconMargin - icon.intrinsicWidth
                     val iconRight = itemView.right - iconMargin
+                    // Интерполируем цвет
+                    val fraction = abs(dX) / itemView.width
+                    val defaultColor = Color.GRAY // Исходный цвет
+                    val finalColor = Color.RED  // Цвет при полном свайпе
+                    val color = evaluator.evaluate(min(fraction / swipeThreshold, 1f), defaultColor, finalColor) as Int
+                    icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
                     icon.setBounds(iconLeft, itemView.top + iconMargin, iconRight, itemView.top + iconMargin + icon.intrinsicHeight)
                 }
+
                 icon.draw(c)
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             }
@@ -236,6 +250,8 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         binding.PinnedRecyclerView.setHasFixedSize(true)
         binding.PinnedRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.PinnedRecyclerView.adapter = pinnedTaskAdapter
+
+
         val pinnedItemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(
                 recyclerView: RecyclerView,
