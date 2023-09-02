@@ -112,9 +112,9 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 taskAdapter.notifyDataSetChanged()
                 pinnedTaskAdapter.notifyDataSetChanged()
                 val hasPinnedItem = pinnedToDoItemList.isNotEmpty()
-                binding.pinned.visibility = if (hasPinnedItem) View.VISIBLE else View.GONE
+                binding.pinned.visibility = if (hasPinnedItem) View.VISIBLE else View.INVISIBLE
                 val hasRecentItem = toDoItemList.isNotEmpty()
-                binding.recent.visibility = if (hasRecentItem) View.VISIBLE else View.GONE
+                binding.recent.visibility = if (hasRecentItem) View.VISIBLE else View.INVISIBLE
             }
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
