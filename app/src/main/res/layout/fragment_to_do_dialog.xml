@@ -9,7 +9,7 @@
     app:cardElevation="0dp"
     tools:context=".fragments.ToDoDialogFragment">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="#5267f6"
+        android:background="@drawable/rounded_background_fragment_dialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView

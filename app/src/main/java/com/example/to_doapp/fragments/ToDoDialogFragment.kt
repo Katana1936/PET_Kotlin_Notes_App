@@ -33,9 +33,10 @@ class ToDoDialogFragment : DialogFragment() {
     override fun onStart() {
         super.onStart()
         dialog?.let {
-            val width = 300.toPx()
-            val height = 300.toPx()
+            val width = 350.toPx()
+            val height = 250.toPx()
             it.window?.setLayout(width, height)
+            it.window?.setDimAmount(0.0f)
         }
     }
     fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
