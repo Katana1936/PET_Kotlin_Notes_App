@@ -1,4 +1,5 @@
 package com.example.to_doapp.fragments
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,6 +30,15 @@ class ToDoDialogFragment : DialogFragment() {
                 }
             }
     }
+    override fun onStart() {
+        super.onStart()
+        dialog?.let {
+            val width = 300.toPx()
+            val height = 300.toPx()
+            it.window?.setLayout(width, height)
+        }
+    }
+    fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
