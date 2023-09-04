@@ -263,9 +263,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         binding.PinnedRecyclerView.setHasFixedSize(true)
         binding.PinnedRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.PinnedRecyclerView.adapter = pinnedTaskAdapter
-
-
-        val pinnedItemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        val pinnedItemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -278,6 +276,12 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
                         pinnedTaskAdapter.removeItem(position)
+                    }
+                    ItemTouchHelper.RIGHT -> {
+                        val item = pinnedTaskAdapter.localRemoveItem(position)
+                        item.isPinned = false
+                        taskAdapter.addItem(item)
+                        updateTaskInFirebase(item)
                     }
                 }
             }
@@ -297,10 +301,15 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 val evaluator = ArgbEvaluator()
                 val swipeThreshold = 0.9f
                 if (dX > 0) {
-                    icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_pin)!!
+                    icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_unpin)!!
                     iconMargin = (itemHeight - icon.intrinsicHeight) / 2
                     val iconLeft = itemView.left + iconMargin
                     val iconRight = itemView.left + iconMargin + icon.intrinsicWidth
+                    val fraction = abs(dX) / itemView.width
+                    val defaultColor = Color.parseColor("#e4e3e9")
+                    val finalColor = Color.BLUE
+                    val color = evaluator.evaluate(min(fraction / swipeThreshold, 1f), defaultColor, finalColor) as Int
+                    icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
                     icon.setBounds(iconLeft, itemView.top + iconMargin, iconRight, itemView.top + iconMargin + icon.intrinsicHeight)
                 } else {
                     icon = ContextCompat.getDrawable(itemView.context, R.drawable.ic_trash)!!

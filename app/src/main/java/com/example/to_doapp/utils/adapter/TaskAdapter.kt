@@ -126,7 +126,6 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
     }
     fun addItem(item: ToDoData) {
         val existingItemIndex = list.indexOfFirst { it.taskId == item.taskId }
-
         if (existingItemIndex == -1) {
             list.add(item)
             notifyItemInserted(list.size - 1)
