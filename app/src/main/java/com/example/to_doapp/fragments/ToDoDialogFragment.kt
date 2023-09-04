@@ -1,4 +1,5 @@
 package com.example.to_doapp.fragments
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,6 @@ import com.example.to_doapp.utils.model.ToDoData
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-
 class ToDoDialogFragment : DialogFragment() {
     private lateinit var binding: FragmentToDoDialogBinding
     private var listener : OnDialogNextBtnClickListener? = null
@@ -60,6 +60,7 @@ class ToDoDialogFragment : DialogFragment() {
         val formatter = SimpleDateFormat("EEE, dd MMM yyyy", Locale.ENGLISH)
         val formattedDate = formatter.format(currentDate)
         binding.date.text = formattedDate
+        binding.date.setTextColor(Color.WHITE)
     }
     interface OnDialogNextBtnClickListener{
         fun saveTask(todoTask: String, todoEdit: TextView)

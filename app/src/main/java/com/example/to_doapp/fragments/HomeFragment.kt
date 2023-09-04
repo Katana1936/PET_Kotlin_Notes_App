@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -37,7 +38,6 @@ import kotlin.math.min
 
 class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener,
     TaskAdapter.TaskAdapterInterface, PinnedTaskAdapter.PinnedTaskAdapterInterface {
-    private val TAG = "HomeFragment"
     private lateinit var binding: FragmentHomeBinding
     private lateinit var database: DatabaseReference
     private var frag: ToDoDialogFragment? = null
@@ -58,12 +58,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-
-
-
-
         init()
         getTaskFromFirebase()
         binding.addTaskBtnMain.setOnClickListener {
@@ -345,7 +339,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             else -> "$itemCount Notes"
         }
     }
-    override fun saveTask(todoTask: String, todoEdit: TextInputEditText) {
+    override fun saveTask(todoTask: String, todoEdit: TextView) {
         val taskId = database.push().key ?: return
         val newTask = ToDoData(taskId, todoTask, isPinned = false)
         database.child(taskId).setValue(newTask).addOnCompleteListener {
@@ -360,7 +354,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         }
         frag!!.dismiss()
     }
-    override fun updateTask(toDoData: ToDoData, todoEdit: TextInputEditText) {
+    override fun updateTask(toDoData: ToDoData, todoEdit: TextView) {
         val map = HashMap<String, Any>()
         map[toDoData.taskId] = toDoData.task
         map["isPinned"] = toDoData.isPinned
@@ -373,7 +367,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             frag!!.dismiss()
         }
     }
-
     fun updateTask(toDoData: ToDoData) {
         val map = HashMap<String, Any>()
         map[toDoData.taskId] = toDoData.task
@@ -404,10 +397,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             }
         })
     }
-
-
-
-
     override fun onDeleteItemClicked(toDoData: ToDoData, position: Int) {
         database.child(toDoData.taskId).removeValue().addOnCompleteListener {
             if (it.isSuccessful) {
