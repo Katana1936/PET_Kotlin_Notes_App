@@ -1,5 +1,7 @@
 package com.example.to_doapp.fragments
 import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.graphics.Canvas
 import android.graphics.Color
@@ -134,9 +136,25 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     }
     private fun init() {
         binding.view1.visibility = View.VISIBLE
+        val animator1 = ObjectAnimator.ofFloat(binding.view1, "alpha", 1f, 0.3f, 1f)
+        animator1.duration = 1300
+        animator1.repeatCount = ValueAnimator.INFINITE
+        animator1.start()
         binding.view2.visibility = View.VISIBLE
+        val animator2 = ObjectAnimator.ofFloat(binding.view2, "alpha", 1f, 0.3f, 1f)
+        animator2.duration = 1300
+        animator2.repeatCount = ValueAnimator.INFINITE
+        animator2.start()
         binding.view3.visibility = View.VISIBLE
+        val animator3 = ObjectAnimator.ofFloat(binding.view3, "alpha", 1f, 0.3f, 1f)
+        animator3.duration = 1300
+        animator3.repeatCount = ValueAnimator.INFINITE
+        animator3.start()
         binding.view4.visibility = View.VISIBLE
+        val animator4 = ObjectAnimator.ofFloat(binding.view4, "alpha", 1f, 0.3f, 1f)
+        animator4.duration = 1300
+        animator4.repeatCount = ValueAnimator.INFINITE
+        animator4.start()
         auth = FirebaseAuth.getInstance()
         authId = auth.currentUser!!.uid
         database = Firebase.database.reference.child("Tasks")
