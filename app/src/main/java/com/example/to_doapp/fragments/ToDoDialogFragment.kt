@@ -73,26 +73,18 @@ class ToDoDialogFragment : DialogFragment() {
             }
         }
         binding.EditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                //
+            }
             override fun afterTextChanged(s: Editable?) {
                 val str = s.toString()
-                if (str.length > 300) {
-                    Toast.makeText(context, "Превышен лимит символов", Toast.LENGTH_SHORT).show()
+                if (str.length > 299) {
+                    Toast.makeText(context, "Oops, too many characters!", Toast.LENGTH_SHORT).show()
                     binding.EditText.setText(str.substring(0, 300))
                     binding.EditText.setSelection(300)
-                }
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                var str = s.toString()
-                val lines = str.split("\n")
-                for (i in lines.indices) {
-                    if (lines[i].length > 25) {
-                        str = str.replaceFirst(lines[i], lines[i].substring(0, 25) + "\n" + lines[i].substring(25))
-                    }
-                }
-                if (str != s.toString()) {
-                    binding.EditText.setText(str)
-                    binding.EditText.setSelection(str.length)
                 }
             }
         })

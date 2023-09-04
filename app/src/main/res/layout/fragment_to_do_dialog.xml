@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="400dp"
-    android:layout_height="300dp"
+    android:layout_height="wrap_content"
     tools:context=".fragments.ToDoDialogFragment">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="@drawable/rounded_background_fragment_dialog"
@@ -27,7 +27,6 @@
             android:src="@drawable/ic_calendar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
@@ -40,21 +39,23 @@
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/calendar"
             app:layout_constraintTop_toTopOf="parent" />
+
         <EditText
             android:id="@+id/EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
+            android:layout_marginBottom="150dp"
             android:background="#5267f6"
             android:hint="Type your note ..."
-            android:inputType="textEmailAddress"
+            android:maxLength="300"
             android:paddingStart="15dp"
             android:paddingTop="15dp"
-            android:textColorHint="#CFDBD5"
             android:textColor="#FFFFFF"
+            android:textColorHint="#CFDBD5"
             android:textSize="20sp"
-            android:maxLength="300"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/todoClose" />
