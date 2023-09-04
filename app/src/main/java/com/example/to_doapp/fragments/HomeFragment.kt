@@ -1,5 +1,4 @@
 package com.example.to_doapp.fragments
-
 import android.animation.ArgbEvaluator
 import android.annotation.SuppressLint
 import android.graphics.Canvas
@@ -35,7 +34,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlin.math.abs
 import kotlin.math.min
-
 class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener,
     TaskAdapter.TaskAdapterInterface, PinnedTaskAdapter.PinnedTaskAdapterInterface {
     private lateinit var binding: FragmentHomeBinding

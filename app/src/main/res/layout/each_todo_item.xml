@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -12,7 +11,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <CheckBox
             android:id="@+id/selectionCircle"
             android:layout_width="25sp"
@@ -26,7 +24,6 @@
             app:layout_constraintEnd_toStartOf="@+id/icPinImageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/icPinImageView"
             android:layout_width="20sp"
@@ -41,7 +38,6 @@
             app:layout_constraintStart_toEndOf="@+id/selectionCircle"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.555" />
-
         <TextView
             android:id="@+id/todoTask"
             android:layout_width="250dp"
@@ -57,7 +53,6 @@
             app:layout_constraintStart_toEndOf="@+id/icPinImageView"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
-
         <TextView
             android:id="@+id/text_time"
             android:layout_width="wrap_content"

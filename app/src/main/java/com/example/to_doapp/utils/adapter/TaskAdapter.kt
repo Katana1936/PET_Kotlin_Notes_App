@@ -11,6 +11,7 @@ import com.example.to_doapp.databinding.EachTodoItemBinding
 import com.example.to_doapp.utils.model.ToDoData
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
     private val TAG = "TaskAdapter"
@@ -30,8 +31,8 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         with(holder) {
             with(list[position]) {
                 binding.todoTask.text = this.task
-                val sdf = SimpleDateFormat("HH:mm")
                 val date = Date(this.timestamp)
+                val sdf = SimpleDateFormat("EEE, dd MMM yyyy, HH:mm", Locale.getDefault())
                 binding.textTime.text = sdf.format(date)
                 binding.selectionCircle.visibility = if (isSelectionMode) View.VISIBLE else View.GONE
                 binding.selectionCircle.isChecked = this.isSelected
@@ -95,7 +96,6 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         list.forEach { it.isSelected = false }
         notifyDataSetChanged()
     }
-
     @SuppressLint("NotifyDataSetChanged")
     fun deleteSelectedItems() {
         val iterator = list.iterator()

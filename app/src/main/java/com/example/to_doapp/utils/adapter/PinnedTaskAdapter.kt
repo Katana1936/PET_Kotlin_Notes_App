@@ -13,6 +13,7 @@ import com.example.to_doapp.fragments.HomeFragment
 import com.example.to_doapp.utils.model.ToDoData
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 class PinnedTaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapter<PinnedTaskAdapter.TaskViewHolder>() {
     private val TAG = "PinnedTaskAdapter"
@@ -32,8 +33,8 @@ class PinnedTaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.
         with(holder) {
             with(list[position]) {
                 binding.todoTask.text = this.task
-                val sdf = SimpleDateFormat("HH:mm")
                 val date = Date(this.timestamp)
+                val sdf = SimpleDateFormat("EEE, dd MMM yyyy, HH:mm", Locale.getDefault())
                 binding.textTime.text = sdf.format(date)
                 binding.selectionCircle.visibility = if (isSelectionMode) View.VISIBLE else View.GONE
                 binding.selectionCircle.isChecked = this.isSelected
