@@ -2,10 +2,13 @@ package com.example.to_doapp.fragments
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.to_doapp.R
 import com.example.to_doapp.databinding.FragmentToDoDialogBinding
@@ -69,6 +72,28 @@ class ToDoDialogFragment : DialogFragment() {
                 }
             }
         }
+        binding.EditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                //
+            }
+            override fun afterTextChanged(s: Editable?) {
+                val str = s.toString()
+                if (str.length > 300) {
+                    s?.delete(300, str.length)
+                    Toast.makeText(context, "Превышен лимит символов", Toast.LENGTH_SHORT).show()
+                }
+                var lineBreaks = 0
+                for (i in 0 until str.length) {
+                    if (i > 0 && (i + lineBreaks) % 25 == 0) {
+                        s?.insert(i + lineBreaks, "\n")
+                        lineBreaks++
+                    }
+                }
+            }
+        })
         val currentDate = Calendar.getInstance().time
         val formatter = SimpleDateFormat("EEE, dd MMM yyyy", Locale.ENGLISH)
         val formattedDate = formatter.format(currentDate)

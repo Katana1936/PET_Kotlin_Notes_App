@@ -52,6 +52,7 @@
             android:paddingStart="15dp"
             android:paddingTop="15dp"
             android:textColorHint="#CFDBD5"
+            android:textColor="#FFFFFF"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
