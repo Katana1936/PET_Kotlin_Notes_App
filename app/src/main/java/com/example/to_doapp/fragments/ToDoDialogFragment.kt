@@ -3,10 +3,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.to_doapp.databinding.FragmentToDoDialogBinding
 import com.example.to_doapp.utils.model.ToDoData
-import com.google.android.material.textfield.TextInputEditText
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+
 class ToDoDialogFragment : DialogFragment() {
     private lateinit var binding: FragmentToDoDialogBinding
     private var listener : OnDialogNextBtnClickListener? = null
@@ -50,13 +54,15 @@ class ToDoDialogFragment : DialogFragment() {
                     toDoData!!.task = todoTask
                     listener?.updateTask(toDoData!!, binding.todoEt)
                 }
-
             }
         }
+        val currentDate = Calendar.getInstance().time
+        val formatter = SimpleDateFormat("EEE, dd MMM yyyy", Locale.ENGLISH)
+        val formattedDate = formatter.format(currentDate)
+        binding.date.text = formattedDate
     }
     interface OnDialogNextBtnClickListener{
-        fun saveTask(todoTask:String , todoEdit:TextInputEditText)
-        fun updateTask(toDoData: ToDoData , todoEdit:TextInputEditText)
+        fun saveTask(todoTask: String, todoEdit: TextView)
+        fun updateTask(toDoData: ToDoData, todoEdit: TextView)
     }
-
 }
