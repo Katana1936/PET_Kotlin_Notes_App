@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import com.example.to_doapp.R
 import com.example.to_doapp.databinding.FragmentToDoDialogBinding
 import com.example.to_doapp.utils.model.ToDoData
 import java.text.SimpleDateFormat
@@ -36,7 +37,8 @@ class ToDoDialogFragment : DialogFragment() {
             val width = 350.toPx()
             val height = 250.toPx()
             it.window?.setLayout(width, height)
-            it.window?.setDimAmount(0.0f)
+            it.window?.setDimAmount(0.1f)
+            it.window?.setBackgroundDrawableResource(R.drawable.rounded_background_fragment_dialog)
         }
     }
     fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()

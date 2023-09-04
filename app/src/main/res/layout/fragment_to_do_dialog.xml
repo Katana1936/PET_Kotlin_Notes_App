@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="400dp"
     android:layout_height="300dp"
-    android:fitsSystemWindows="true"
-    android:elevation="0dp"
-    app:cardElevation="0dp"
     tools:context=".fragments.ToDoDialogFragment">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:background="@drawable/rounded_background_fragment_dialog"
@@ -72,4 +69,4 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/todoEt" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</com.google.android.material.card.MaterialCardView>
+</FrameLayout>
