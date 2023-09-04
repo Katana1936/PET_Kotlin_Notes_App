@@ -23,7 +23,6 @@ import com.example.to_doapp.databinding.FragmentHomeBinding
 import com.example.to_doapp.utils.adapter.PinnedTaskAdapter
 import com.example.to_doapp.utils.adapter.TaskAdapter
 import com.example.to_doapp.utils.model.ToDoData
-import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -42,6 +41,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     private lateinit var auth: FirebaseAuth
     private lateinit var authId: String
     private lateinit var taskAdapter: TaskAdapter
+    private lateinit var pinnedTaskAdapter_temp: PinnedTaskAdapter
     private var toDoItemList: MutableList<ToDoData> = mutableListOf()
     private var pinnedToDoItemList: MutableList<ToDoData> = mutableListOf()
     val pinnedTaskAdapter = PinnedTaskAdapter(mutableListOf())
@@ -69,7 +69,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             )
         }
         val rootRef = FirebaseDatabase.getInstance().getReference("Tasks")
-
         binding.Edit.setOnClickListener { toggleEditMode() }
         binding.Done.setOnClickListener { toggleEditMode() }
         binding.searchView.setOnTouchListener { _, _ -> !isSearchViewEnabled }
@@ -80,10 +79,12 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         }
         binding.DeleteAll.setOnClickListener {
             taskAdapter.deleteSelectedItems()
+            pinnedTaskAdapter.deleteSelectedItems()
         }
     }
     private fun toggleEditMode() {
         taskAdapter.toggleSelectionMode()
+        pinnedTaskAdapter.toggleSelectionMode()
         isSearchViewEnabled = !isSearchViewEnabled
         binding.searchView.isEnabled = isSearchViewEnabled
         binding.searchView.clearFocus()
