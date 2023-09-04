@@ -1,6 +1,7 @@
 package com.example.to_doapp.utils.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -54,6 +55,7 @@ class PinnedTaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.
                     listener?.onEditItemClicked(this, position)
                 }
                 binding.icPinImageView.visibility= View.VISIBLE
+                binding.icPinImageView.setColorFilter(Color.parseColor("#ee7b1f"))
             }
         }
     }

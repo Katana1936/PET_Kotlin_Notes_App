@@ -122,6 +122,10 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 binding.pinned.visibility = if (hasPinnedItem) View.VISIBLE else View.GONE
                 val hasRecentItem = toDoItemList.isNotEmpty()
                 binding.recent.visibility = if (hasRecentItem) View.VISIBLE else View.GONE
+                binding.view1.visibility = View.GONE
+                binding.view2.visibility = View.GONE
+                binding.view3.visibility = View.GONE
+                binding.view4.visibility = View.GONE
             }
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
@@ -129,6 +133,10 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         })
     }
     private fun init() {
+        binding.view1.visibility = View.VISIBLE
+        binding.view2.visibility = View.VISIBLE
+        binding.view3.visibility = View.VISIBLE
+        binding.view4.visibility = View.VISIBLE
         auth = FirebaseAuth.getInstance()
         authId = auth.currentUser!!.uid
         database = Firebase.database.reference.child("Tasks")
