@@ -41,7 +41,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     private lateinit var auth: FirebaseAuth
     private lateinit var authId: String
     private lateinit var taskAdapter: TaskAdapter
-    private lateinit var pinnedTaskAdapter_temp: PinnedTaskAdapter
     private var toDoItemList: MutableList<ToDoData> = mutableListOf()
     private var pinnedToDoItemList: MutableList<ToDoData> = mutableListOf()
     val pinnedTaskAdapter = PinnedTaskAdapter(mutableListOf())

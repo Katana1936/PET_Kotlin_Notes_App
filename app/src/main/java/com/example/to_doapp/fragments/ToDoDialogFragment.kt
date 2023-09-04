@@ -81,10 +81,10 @@ class ToDoDialogFragment : DialogFragment() {
             }
             override fun afterTextChanged(s: Editable?) {
                 val str = s.toString()
-                if (str.length > 299) {
+                if (str.length > 99) {
                     Toast.makeText(context, "Oops, too many characters!", Toast.LENGTH_SHORT).show()
-                    binding.EditText.setText(str.substring(0, 300))
-                    binding.EditText.setSelection(300)
+                    binding.EditText.setText(str.substring(0, 99))
+                    binding.EditText.setSelection(99)
                 }
             }
         })

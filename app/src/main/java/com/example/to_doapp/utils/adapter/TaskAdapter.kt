@@ -16,7 +16,6 @@ import java.util.Locale
 class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
     private val TAG = "TaskAdapter"
     private var listener: TaskAdapterInterface? = null
-    private var swipedPosition: Int = RecyclerView.NO_POSITION
     var isSelectionMode = false
     fun setListener(listener: TaskAdapterInterface) {
         this.listener = listener
@@ -51,9 +50,6 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                 binding.root.setBackgroundResource(backgroundDrawableRes)
                 binding.editTask.setOnClickListener {
                     listener?.onEditItemClicked(this, position)
-                }
-                binding.deleteTask.setOnClickListener {
-                    //listener?.onDeleteItemClicked(this , position)
                 }
                 binding.icPinImageView.visibility= View.GONE
             }

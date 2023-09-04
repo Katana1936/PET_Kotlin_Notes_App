@@ -9,6 +9,7 @@
         android:background="@drawable/rounded_background_fragment_dialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ImageView
             android:id="@+id/todoClose"
             android:layout_width="30dp"
@@ -16,27 +17,33 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
             android:src="@drawable/ic_close"
+            app:layout_constraintBottom_toTopOf="@+id/EditText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/calendar"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="30dp"
+            android:layout_marginBottom="5dp"
             android:src="@drawable/ic_calendar"
+            app:layout_constraintBottom_toTopOf="@+id/EditText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="30dp"
-            android:background="#5267f6"
+            android:layout_marginBottom="3dp"
             android:hint="Tue, 17 Sep 2023"
             android:textColorHint="#ffffff"
             android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/EditText"
             app:layout_constraintStart_toEndOf="@+id/calendar"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,9 +54,8 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="150dp"
-            android:background="#5267f6"
             android:hint="Type your note ..."
-            android:maxLength="300"
+            android:maxLength="100"
             android:paddingStart="15dp"
             android:paddingTop="15dp"
             android:textColor="#FFFFFF"
@@ -59,6 +65,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/todoClose" />
+
         <ImageView
             android:id="@+id/todoNextBtn"
             android:layout_width="25dp"
