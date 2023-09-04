@@ -53,19 +53,19 @@ class ToDoDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         if (arguments != null){
             toDoData = ToDoData(arguments?.getString("taskId").toString() ,arguments?.getString("task").toString())
-            binding.todoEt.setText(toDoData?.task)
+            binding.EditText.setText(toDoData?.task)
         }
         binding.todoClose.setOnClickListener {
             dismiss()
         }
         binding.todoNextBtn.setOnClickListener {
-            val todoTask = binding.todoEt.text.toString()
+            val todoTask = binding.EditText.text.toString()
             if (todoTask.isNotEmpty()){
                 if (toDoData == null){
-                    listener?.saveTask(todoTask , binding.todoEt)
-                }else{
+                    listener?.saveTask(todoTask , binding.EditText)
+                } else {
                     toDoData!!.task = todoTask
-                    listener?.updateTask(toDoData!!, binding.todoEt)
+                    listener?.updateTask(toDoData!!, binding.EditText)
                 }
             }
         }

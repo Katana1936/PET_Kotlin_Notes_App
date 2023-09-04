@@ -40,9 +40,8 @@
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/calendar"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/todoEt"
+        <EditText
+            android:id="@+id/EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -52,21 +51,19 @@
             android:inputType="textEmailAddress"
             android:paddingStart="15dp"
             android:paddingTop="15dp"
-            android:textColorHint="#a5baff"
+            android:textColorHint="#CFDBD5"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/todoClose" />
-
         <ImageView
             android:id="@+id/todoNextBtn"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="30dp"
             android:src="@drawable/ic_done"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/todoEt" />
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
