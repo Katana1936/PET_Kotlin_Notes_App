@@ -20,7 +20,9 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
     fun setListener(listener: TaskAdapterInterface) {
         this.listener = listener
     }
-    class TaskViewHolder(val binding: EachTodoItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class TaskViewHolder(val binding: EachTodoItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        var lastClickTime: Long = 0
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val binding = EachTodoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TaskViewHolder(binding)
@@ -52,6 +54,14 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                     listener?.onEditItemClicked(this, position)
                 }
                 binding.icPinImageView.visibility= View.GONE
+                holder.binding.root.setOnClickListener {
+                    val currentClickTime = System.currentTimeMillis()
+                    val elapsedTime = currentClickTime - holder.lastClickTime
+                    holder.lastClickTime = currentClickTime
+                    if (elapsedTime <= 300) {  // 300 миллисекунд - это временной интервал, который можно регулировать
+                        listener?.onEditItemClicked(list[position], position)
+                    }
+                }
             }
         }
     }
