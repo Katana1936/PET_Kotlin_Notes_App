@@ -23,7 +23,9 @@ class PinnedTaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.
     fun setListener(listener: PinnedTaskAdapterInterface) {
         this.listener = listener
     }
-    class TaskViewHolder(val binding: EachTodoItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class TaskViewHolder(val binding: EachTodoItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        var lastClickTime: Long = 0
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val binding = EachTodoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TaskViewHolder(binding)
@@ -56,6 +58,14 @@ class PinnedTaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.
                 }
                 binding.icPinImageView.visibility= View.VISIBLE
                 binding.icPinImageView.setColorFilter(Color.parseColor("#ee7b1f"))
+                holder.binding.root.setOnClickListener {
+                    val currentClickTime = System.currentTimeMillis()
+                    val elapsedTime = currentClickTime - holder.lastClickTime
+                    holder.lastClickTime = currentClickTime
+                    if (elapsedTime <= 300) {
+                        listener?.onEditItemClicked(list[position], position)
+                    }
+                }
             }
         }
     }

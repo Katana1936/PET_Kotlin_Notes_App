@@ -58,7 +58,7 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                     val currentClickTime = System.currentTimeMillis()
                     val elapsedTime = currentClickTime - holder.lastClickTime
                     holder.lastClickTime = currentClickTime
-                    if (elapsedTime <= 300) {  // 300 миллисекунд - это временной интервал, который можно регулировать
+                    if (elapsedTime <= 300) { 
                         listener?.onEditItemClicked(list[position], position)
                     }
                 }
