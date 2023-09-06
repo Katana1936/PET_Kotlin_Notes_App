@@ -109,7 +109,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
                 viewHolder.itemView.findViewById<View>(R.id.icMove)?.visibility = View.GONE
-                recyclerView.adapter?.notifyDataSetChanged()
+                (recyclerView.adapter as? PinnedTaskAdapter)?.updateList(pinnedToDoItemList)
             }
         })
         touchHelperPinned.attachToRecyclerView(binding.PinnedRecyclerView)
@@ -139,14 +139,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             taskAdapter.deleteSelectedItems()
             pinnedTaskAdapter.deleteSelectedItems()
         }
-
-
-
-
-
-
-
-
     }
     private fun toggleEditMode() {
         taskAdapter.toggleSelectionMode()

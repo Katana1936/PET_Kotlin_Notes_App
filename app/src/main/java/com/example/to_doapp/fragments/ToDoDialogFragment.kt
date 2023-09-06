@@ -34,7 +34,6 @@ class ToDoDialogFragment : DialogFragment() {
                 arguments = Bundle().apply {
                     putString("taskId", taskId)
                     putString("task", task)
-                    //new
                     putBoolean("isPinned", isPinned)
                 }
             }
@@ -60,15 +59,12 @@ class ToDoDialogFragment : DialogFragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //new
-        val isPinned = arguments?.getBoolean("isPinned") ?: false // значение по умолчанию false
-
+        val isPinned = arguments?.getBoolean("isPinned") ?: false
         if (arguments != null){
             toDoData = ToDoData(arguments?.getString("taskId").toString() ,arguments?.getString("task").toString())
-            toDoData?.isPinned = arguments?.getBoolean("isPinned") ?: false // добавлено
+            toDoData?.isPinned = arguments?.getBoolean("isPinned") ?: false
             binding.EditText.setText(toDoData?.task)
         }
-
         binding.todoClose.setOnClickListener {
             dismiss()
         }
@@ -79,9 +75,7 @@ class ToDoDialogFragment : DialogFragment() {
                     listener?.saveTask(todoTask, binding.EditText, isPinned)
                 } else {
                     toDoData!!.task = todoTask
-                    //
                     toDoData!!.isPinned = isPinned
-                    //
                     listener?.updateTask(toDoData!!, binding.EditText)
                 }
             }
