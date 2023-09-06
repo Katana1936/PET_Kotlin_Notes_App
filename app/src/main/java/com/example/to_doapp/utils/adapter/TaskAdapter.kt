@@ -15,20 +15,16 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
     private val TAG = "TaskAdapter"
     private var listener: TaskAdapterInterface? = null
     var isSelectionMode = false
-
     fun setListener(listener: TaskAdapterInterface) {
         this.listener = listener
     }
-
     class TaskViewHolder(val binding: EachTodoItemBinding) : RecyclerView.ViewHolder(binding.root) {
         var lastClickTime: Long = 0
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val binding = EachTodoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TaskViewHolder(binding)
     }
-
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         with(holder) {
@@ -64,12 +60,10 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
             }
         }
     }
-
     fun toggleSelection(position: Int) {
         list[position].isSelected = !list[position].isSelected
         notifyItemChanged(position)
     }
-
     @SuppressLint("NotifyDataSetChanged")
     fun toggleSelectionMode() {
         isSelectionMode = !isSelectionMode
@@ -78,11 +72,9 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         }
         notifyDataSetChanged()
     }
-
     override fun getItemCount(): Int {
         return list.size
     }
-
     @SuppressLint("NotifyDataSetChanged")
     fun updateList(newList: List<ToDoData>) {
         val oldItemsIterator = list.iterator()
@@ -103,7 +95,6 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         list.forEach { it.isSelected = false }
         notifyDataSetChanged()
     }
-
     @SuppressLint("NotifyDataSetChanged")
     fun deleteSelectedItems() {
         val iterator = list.iterator()
@@ -116,12 +107,10 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         }
         notifyDataSetChanged()
     }
-
     interface TaskAdapterInterface {
         fun onDeleteItemClicked(toDoData: ToDoData, position: Int)
         fun onEditItemClicked(toDoData: ToDoData, position: Int)
     }
-
     fun removeItem(position: Int): ToDoData {
         val item = list[position]
         list.removeAt(position)
@@ -129,13 +118,11 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         listener?.onDeleteItemClicked(item, position)
         return item
     }
-
     fun localRemoveItem(position: Int): ToDoData {
         val item = list[position]
         list.removeAt(position)
         return item
     }
-
     fun addItem(item: ToDoData) {
         val existingItemIndex = list.indexOfFirst { it.taskId == item.taskId }
         if (existingItemIndex == -1) {
