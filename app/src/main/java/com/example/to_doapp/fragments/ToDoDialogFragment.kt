@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
@@ -38,6 +39,7 @@ class ToDoDialogFragment : DialogFragment() {
     }
     override fun onStart() {
         super.onStart()
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         dialog?.let {
             val width = 350.toPx()
             val height = 250.toPx()
@@ -96,8 +98,6 @@ class ToDoDialogFragment : DialogFragment() {
         binding.date.text = formattedDate
         binding.date.setTextColor(Color.WHITE)
         binding.EditText.requestFocus()
-        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-        imm?.showSoftInput(binding.EditText, InputMethodManager.SHOW_IMPLICIT)
     }
     interface OnDialogNextBtnClickListener{
         fun saveTask(todoTask: String, todoEdit: TextView)
