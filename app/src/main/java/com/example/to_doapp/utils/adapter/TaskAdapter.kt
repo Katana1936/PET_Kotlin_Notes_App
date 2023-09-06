@@ -1,6 +1,6 @@
 package com.example.to_doapp.utils.adapter
-
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +10,6 @@ import com.example.to_doapp.databinding.EachTodoItemBinding
 import com.example.to_doapp.utils.model.ToDoData
 import java.text.SimpleDateFormat
 import java.util.*
-
 class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
     private val TAG = "TaskAdapter"
     private var listener: TaskAdapterInterface? = null

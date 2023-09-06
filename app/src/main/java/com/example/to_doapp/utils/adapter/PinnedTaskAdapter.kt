@@ -1,21 +1,17 @@
 package com.example.to_doapp.utils.adapter
-
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.to_doapp.R
 import com.example.to_doapp.databinding.EachTodoItemBinding
-import com.example.to_doapp.fragments.HomeFragment
 import com.example.to_doapp.utils.model.ToDoData
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
 class PinnedTaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapter<PinnedTaskAdapter.TaskViewHolder>() {
     private val TAG = "PinnedTaskAdapter"
     private var listener: PinnedTaskAdapterInterface? = null
@@ -85,6 +81,7 @@ class PinnedTaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.
     fun updateList(newList: List<ToDoData>) {
         list = newList.toMutableList()
         list.forEach { it.isSelected = false }
+        list.forEach { it.isPinned = true }
         notifyDataSetChanged()
     }
     @SuppressLint("NotifyDataSetChanged")

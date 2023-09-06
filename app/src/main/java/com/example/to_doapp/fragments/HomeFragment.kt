@@ -81,6 +81,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                     viewHolder?.itemView?.findViewById<View>(R.id.icMove)?.visibility = View.VISIBLE
                 }
             }
+            @SuppressLint("NotifyDataSetChanged")
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
                 viewHolder.itemView.findViewById<View>(R.id.icMove)?.visibility = View.GONE
@@ -93,7 +94,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
                 val fromPosition = viewHolder.adapterPosition
                 val toPosition = target.adapterPosition
-                Collections.swap(toDoItemList, fromPosition, toPosition)
+                Collections.swap(pinnedToDoItemList, fromPosition, toPosition)
                 recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
                 return true
             }
@@ -104,6 +105,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                     viewHolder?.itemView?.findViewById<View>(R.id.icMove)?.visibility = View.VISIBLE
                 }
             }
+            @SuppressLint("NotifyDataSetChanged")
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
                 viewHolder.itemView.findViewById<View>(R.id.icMove)?.visibility = View.GONE
@@ -427,7 +429,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             else -> "$itemCount Notes"
         }
     }
-    override fun saveTask(todoTask: String, todoEdit: TextView) {
+    override fun saveTask(todoTask: String, todoEdit: TextView, isPinned: Boolean) {
         val taskId = database.push().key ?: return
         val newTask = ToDoData(taskId, todoTask, isPinned = false)
         database.child(taskId).setValue(newTask).addOnCompleteListener {
@@ -461,19 +463,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             }
         })
     }
-    fun updateTask(toDoData: ToDoData) {
-        val map = HashMap<String, Any>()
-        map[toDoData.taskId] = toDoData.task
-        map["isPinned"] = toDoData.isPinned
-        database.updateChildren(map).addOnCompleteListener {
-            if (it.isSuccessful) {
-                Toast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, it.exception.toString(), Toast.LENGTH_SHORT).show()
-            }
-            frag!!.dismiss()
-        }
-    }
     private fun removeAllPinnedTasks() {
         val rootRef = FirebaseDatabase.getInstance().getReference("Tasks").child(authId)
         rootRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -498,9 +487,10 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         }
     }
     override fun onEditItemClicked(toDoData: ToDoData, position: Int) {
+
         if (frag != null)
             childFragmentManager.beginTransaction().remove(frag!!).commit()
-        frag = ToDoDialogFragment.newInstance(toDoData.taskId, toDoData.task)
+        frag = ToDoDialogFragment.newInstance(toDoData.taskId, toDoData.task, toDoData.isPinned)
         frag!!.setListener(this)
         frag!!.show(
             childFragmentManager,

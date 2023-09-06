@@ -29,11 +29,13 @@ class ToDoDialogFragment : DialogFragment() {
     companion object {
         const val TAG = "DialogFragment"
         @JvmStatic
-        fun newInstance(taskId: String, task: String) =
+        fun newInstance(taskId: String, task: String, isPinned: Boolean) =
             ToDoDialogFragment().apply {
                 arguments = Bundle().apply {
                     putString("taskId", taskId)
                     putString("task", task)
+                    //new
+                    putBoolean("isPinned", isPinned)
                 }
             }
     }
@@ -58,10 +60,15 @@ class ToDoDialogFragment : DialogFragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //new
+        val isPinned = arguments?.getBoolean("isPinned") ?: false // значение по умолчанию false
+
         if (arguments != null){
             toDoData = ToDoData(arguments?.getString("taskId").toString() ,arguments?.getString("task").toString())
+            toDoData?.isPinned = arguments?.getBoolean("isPinned") ?: false // добавлено
             binding.EditText.setText(toDoData?.task)
         }
+
         binding.todoClose.setOnClickListener {
             dismiss()
         }
@@ -69,9 +76,12 @@ class ToDoDialogFragment : DialogFragment() {
             val todoTask = binding.EditText.text.toString()
             if (todoTask.isNotEmpty()){
                 if (toDoData == null){
-                    listener?.saveTask(todoTask , binding.EditText)
+                    listener?.saveTask(todoTask, binding.EditText, isPinned)
                 } else {
                     toDoData!!.task = todoTask
+                    //
+                    toDoData!!.isPinned = isPinned
+                    //
                     listener?.updateTask(toDoData!!, binding.EditText)
                 }
             }
@@ -100,7 +110,7 @@ class ToDoDialogFragment : DialogFragment() {
         binding.EditText.requestFocus()
     }
     interface OnDialogNextBtnClickListener{
-        fun saveTask(todoTask: String, todoEdit: TextView)
+        fun saveTask(todoTask: String, todoEdit: TextView, isPinned: Boolean)
         fun updateTask(toDoData: ToDoData, todoEdit: TextView)
     }
 }
