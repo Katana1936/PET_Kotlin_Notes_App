@@ -33,6 +33,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.util.Collections
 import kotlin.math.abs
 import kotlin.math.min
@@ -60,18 +63,15 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         super.onViewCreated(view, savedInstanceState)
         init()
         getTaskFromFirebase()
-
-
-
-
-
-
+        //main rec
         val touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
                 val fromPosition = viewHolder.adapterPosition
                 val toPosition = target.adapterPosition
                 Collections.swap(toDoItemList, fromPosition, toPosition)
                 recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
+                recyclerView.adapter?.notifyItemChanged(fromPosition)
+                recyclerView.adapter?.notifyItemChanged(toPosition)
                 return true
             }
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
@@ -87,9 +87,30 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             }
         })
         touchHelper.attachToRecyclerView(binding.mainRecyclerView)
-
-
-
+        //pinned rec
+        val touchHelperPinned = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                val fromPosition = viewHolder.adapterPosition
+                val toPosition = target.adapterPosition
+                Collections.swap(toDoItemList, fromPosition, toPosition)
+                recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
+                recyclerView.adapter?.notifyItemChanged(fromPosition)
+                recyclerView.adapter?.notifyItemChanged(toPosition)
+                return true
+            }
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
+            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+                super.onSelectedChanged(viewHolder, actionState)
+                if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+                    viewHolder?.itemView?.findViewById<View>(R.id.icMove)?.visibility = View.VISIBLE
+                }
+            }
+            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+                super.clearView(recyclerView, viewHolder)
+                viewHolder.itemView.findViewById<View>(R.id.icMove)?.visibility = View.GONE
+            }
+        })
+        touchHelperPinned.attachToRecyclerView(binding.PinnedRecyclerView)
 
 
 
@@ -156,6 +177,8 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                         toDoItemList.add(todoTask)
                     }
                     removeAllPinnedTasks()
+                    taskAdapter.updateList(toDoItemList)
+                    pinnedTaskAdapter.updateList(pinnedToDoItemList)
                 }
                 taskAdapter.updateList(toDoItemList)
                 pinnedTaskAdapter.updateList(pinnedToDoItemList)
@@ -462,7 +485,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                     }
                 }
             }
-
             override fun onCancelled(databaseError: DatabaseError) {
                 Toast.makeText(context, databaseError.message, Toast.LENGTH_SHORT).show()
             }

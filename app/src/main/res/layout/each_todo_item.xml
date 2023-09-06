@@ -41,6 +41,7 @@
             android:id="@+id/icMove"
             android:layout_width="20sp"
             android:layout_height="20sp"
+            android:layout_marginEnd="20dp"
             android:src="@drawable/ic_move"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
