@@ -1,4 +1,5 @@
 package com.example.to_doapp.fragments
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
@@ -93,6 +95,9 @@ class ToDoDialogFragment : DialogFragment() {
         val formattedDate = formatter.format(currentDate)
         binding.date.text = formattedDate
         binding.date.setTextColor(Color.WHITE)
+        binding.EditText.requestFocus()
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.showSoftInput(binding.EditText, InputMethodManager.SHOW_IMPLICIT)
     }
     interface OnDialogNextBtnClickListener{
         fun saveTask(todoTask: String, todoEdit: TextView)
