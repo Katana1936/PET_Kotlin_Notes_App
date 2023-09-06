@@ -379,17 +379,23 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         frag!!.dismiss()
     }
     override fun updateTask(toDoData: ToDoData, todoEdit: TextView) {
-        val map = HashMap<String, Any>()
-        map[toDoData.taskId] = toDoData.task
-        map["isPinned"] = toDoData.isPinned
-        database.updateChildren(map).addOnCompleteListener {
-            if (it.isSuccessful) {
-                Toast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, it.exception.toString(), Toast.LENGTH_SHORT).show()
+        val taskRef = database.child(toDoData.taskId)
+        taskRef.child("task").setValue(toDoData.task)
+        taskRef.child("isPinned").setValue(toDoData.isPinned)
+        taskRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Toast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "Failed to update task in Firebase", Toast.LENGTH_SHORT).show()
+                }
+                frag!!.dismiss()
             }
-            frag!!.dismiss()
-        }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Toast.makeText(context, databaseError.message, Toast.LENGTH_SHORT).show()
+                frag!!.dismiss()
+            }
+        })
     }
     fun updateTask(toDoData: ToDoData) {
         val map = HashMap<String, Any>()
@@ -438,20 +444,22 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             ToDoDialogFragment.TAG
         )
     }
-     fun updateTaskInFirebase(toDoData: ToDoData) {
+    fun updateTaskInFirebase(toDoData: ToDoData) {
+        val taskRef = database.child(toDoData.taskId)
         val taskMap = mapOf(
             "task" to toDoData.task,
             "isPinned" to toDoData.isPinned,
             "timestamp" to toDoData.timestamp
         )
-        database.child(toDoData.taskId).updateChildren(taskMap).addOnCompleteListener { task ->
+        taskRef.updateChildren(taskMap).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Toast.makeText(context, "Task updated successfully in Firebase", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Task updated successfully in Firebase", Toast.LENGTH_SHORT)
+                    .show()
                 updateNoteCount()
             } else {
-                Toast.makeText(context, "Failed to update task in Firebase", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Failed to update task in Firebase", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
-
 }
