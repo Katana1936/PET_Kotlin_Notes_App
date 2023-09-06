@@ -8,6 +8,8 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -70,7 +72,9 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 val toPosition = target.adapterPosition
                 Collections.swap(toDoItemList, fromPosition, toPosition)
                 recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
-                recyclerView.adapter?.notifyDataSetChanged()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    recyclerView.adapter?.notifyDataSetChanged()
+                }, 600)
                 return true
             }
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
@@ -93,6 +97,9 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 val toPosition = target.adapterPosition
                 Collections.swap(toDoItemList, fromPosition, toPosition)
                 recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    recyclerView.adapter?.notifyDataSetChanged()
+                }, 600)
                 return true
             }
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
