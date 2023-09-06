@@ -90,7 +90,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         binding.searchView.isEnabled = isSearchViewEnabled
         binding.searchView.clearFocus()
         binding.searchView.alpha = if (isSearchViewEnabled) 1.0f else 0.5f
-        binding.MoveAll.visibility = if (binding.MoveAll.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         binding.DeleteAll.visibility = if (binding.DeleteAll.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         binding.noteNum.visibility = if (binding.noteNum.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         binding.addTaskBtnMain.visibility = if (binding.addTaskBtnMain.visibility == View.VISIBLE) View.GONE else View.VISIBLE
