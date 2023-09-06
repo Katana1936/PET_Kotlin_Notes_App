@@ -72,9 +72,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 val toPosition = target.adapterPosition
                 Collections.swap(toDoItemList, fromPosition, toPosition)
                 recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
-                Handler(Looper.getMainLooper()).postDelayed({
-                    recyclerView.adapter?.notifyDataSetChanged()
-                }, 600)
                 return true
             }
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
@@ -87,6 +84,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
                 viewHolder.itemView.findViewById<View>(R.id.icMove)?.visibility = View.GONE
+                recyclerView.adapter?.notifyDataSetChanged()
             }
         })
         touchHelper.attachToRecyclerView(binding.mainRecyclerView)
@@ -97,9 +95,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 val toPosition = target.adapterPosition
                 Collections.swap(toDoItemList, fromPosition, toPosition)
                 recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
-                Handler(Looper.getMainLooper()).postDelayed({
-                    recyclerView.adapter?.notifyDataSetChanged()
-                }, 600)
                 return true
             }
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
@@ -112,6 +107,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
                 viewHolder.itemView.findViewById<View>(R.id.icMove)?.visibility = View.GONE
+                recyclerView.adapter?.notifyDataSetChanged()
             }
         })
         touchHelperPinned.attachToRecyclerView(binding.PinnedRecyclerView)
