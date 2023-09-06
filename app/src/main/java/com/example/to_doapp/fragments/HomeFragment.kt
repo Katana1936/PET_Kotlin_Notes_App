@@ -33,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.util.Collections
 import kotlin.math.abs
 import kotlin.math.min
 class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener,
@@ -59,6 +60,30 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         super.onViewCreated(view, savedInstanceState)
         init()
         getTaskFromFirebase()
+
+
+
+
+
+
+        taskAdapter = TaskAdapter(toDoItemList)
+        binding.mainRecyclerView.adapter = taskAdapter
+        val touchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                val fromPosition = viewHolder.adapterPosition
+                val toPosition = target.adapterPosition
+                Collections.swap(toDoItemList, fromPosition, toPosition)
+                recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
+                return true
+            }
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
+        })
+        touchHelper.attachToRecyclerView(binding.mainRecyclerView)
+
+
+
+
+
         binding.addTaskBtnMain.setOnClickListener {
             if (frag != null)
                 childFragmentManager.beginTransaction().remove(frag!!).commit()
@@ -82,6 +107,14 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             taskAdapter.deleteSelectedItems()
             pinnedTaskAdapter.deleteSelectedItems()
         }
+
+
+
+
+
+
+
+
     }
     private fun toggleEditMode() {
         taskAdapter.toggleSelectionMode()

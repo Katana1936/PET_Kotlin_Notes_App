@@ -1,7 +1,6 @@
 package com.example.to_doapp.utils.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,23 +9,26 @@ import com.example.to_doapp.R
 import com.example.to_doapp.databinding.EachTodoItemBinding
 import com.example.to_doapp.utils.model.ToDoData
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
     private val TAG = "TaskAdapter"
     private var listener: TaskAdapterInterface? = null
     var isSelectionMode = false
+
     fun setListener(listener: TaskAdapterInterface) {
         this.listener = listener
     }
+
     class TaskViewHolder(val binding: EachTodoItemBinding) : RecyclerView.ViewHolder(binding.root) {
         var lastClickTime: Long = 0
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val binding = EachTodoItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TaskViewHolder(binding)
     }
+
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         with(holder) {
@@ -50,7 +52,7 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                     else -> if (isItemSelected) R.drawable.selected_sharp_corners else R.drawable.sharp_corners
                 }
                 binding.root.setBackgroundResource(backgroundDrawableRes)
-                binding.icPinImageView.visibility= View.GONE
+                binding.icPinImageView.visibility = View.GONE
                 holder.binding.root.setOnClickListener {
                     val currentClickTime = System.currentTimeMillis()
                     val elapsedTime = currentClickTime - holder.lastClickTime
@@ -62,10 +64,12 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
             }
         }
     }
+
     fun toggleSelection(position: Int) {
         list[position].isSelected = !list[position].isSelected
         notifyItemChanged(position)
     }
+
     @SuppressLint("NotifyDataSetChanged")
     fun toggleSelectionMode() {
         isSelectionMode = !isSelectionMode
@@ -74,22 +78,22 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         }
         notifyDataSetChanged()
     }
+
     override fun getItemCount(): Int {
         return list.size
     }
+
     @SuppressLint("NotifyDataSetChanged")
     fun updateList(newList: List<ToDoData>) {
-        Log.d("TEST", "Updating list. Old List Size: ${list.size}, New List Size: ${newList.size}")
-
         val oldItemsIterator = list.iterator()
         while (oldItemsIterator.hasNext()) {
             val oldItem = oldItemsIterator.next()
-            if (newList.none { it.taskId == oldItem.taskId}) {
+            if (newList.none { it.taskId == oldItem.taskId }) {
                 oldItemsIterator.remove()
             }
         }
         for (newItem in newList) {
-            val existingItemIndex = list.indexOfFirst { it.taskId== newItem.taskId }
+            val existingItemIndex = list.indexOfFirst { it.taskId == newItem.taskId }
             if (existingItemIndex == -1) {
                 list.add(newItem)
             } else {
@@ -99,6 +103,7 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         list.forEach { it.isSelected = false }
         notifyDataSetChanged()
     }
+
     @SuppressLint("NotifyDataSetChanged")
     fun deleteSelectedItems() {
         val iterator = list.iterator()
@@ -111,10 +116,12 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         }
         notifyDataSetChanged()
     }
+
     interface TaskAdapterInterface {
         fun onDeleteItemClicked(toDoData: ToDoData, position: Int)
         fun onEditItemClicked(toDoData: ToDoData, position: Int)
     }
+
     fun removeItem(position: Int): ToDoData {
         val item = list[position]
         list.removeAt(position)
@@ -122,20 +129,20 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         listener?.onDeleteItemClicked(item, position)
         return item
     }
+
     fun localRemoveItem(position: Int): ToDoData {
         val item = list[position]
         list.removeAt(position)
         return item
     }
+
     fun addItem(item: ToDoData) {
         val existingItemIndex = list.indexOfFirst { it.taskId == item.taskId }
         if (existingItemIndex == -1) {
             list.add(item)
-            notifyItemInserted(list.size - 1)
         } else {
             list[existingItemIndex] = item
-            notifyItemChanged(existingItemIndex)
         }
+        notifyDataSetChanged()
     }
-
 }
