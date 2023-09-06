@@ -53,9 +53,6 @@ class PinnedTaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.
                     else -> if (isItemSelected) R.drawable.selected_sharp_corners else R.drawable.sharp_corners
                 }
                 binding.root.setBackgroundResource(backgroundDrawableRes)
-                binding.editTask.setOnClickListener {
-                    listener?.onEditItemClicked(this, position)
-                }
                 binding.icPinImageView.visibility= View.VISIBLE
                 binding.icPinImageView.setColorFilter(Color.parseColor("#ee7b1f"))
                 holder.binding.root.setOnClickListener {

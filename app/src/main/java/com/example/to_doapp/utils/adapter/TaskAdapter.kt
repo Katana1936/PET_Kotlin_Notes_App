@@ -50,15 +50,12 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
                     else -> if (isItemSelected) R.drawable.selected_sharp_corners else R.drawable.sharp_corners
                 }
                 binding.root.setBackgroundResource(backgroundDrawableRes)
-                binding.editTask.setOnClickListener {
-                    listener?.onEditItemClicked(this, position)
-                }
                 binding.icPinImageView.visibility= View.GONE
                 holder.binding.root.setOnClickListener {
                     val currentClickTime = System.currentTimeMillis()
                     val elapsedTime = currentClickTime - holder.lastClickTime
                     holder.lastClickTime = currentClickTime
-                    if (elapsedTime <= 300) { 
+                    if (elapsedTime <= 300) {
                         listener?.onEditItemClicked(list[position], position)
                     }
                 }
