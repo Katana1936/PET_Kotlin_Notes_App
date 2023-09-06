@@ -27,7 +27,6 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recent" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topSection"
         android:layout_width="match_parent"
@@ -35,7 +34,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
         <TextView
             android:id="@+id/notes"
             android:layout_width="wrap_content"
@@ -52,7 +50,6 @@
             app:layout_constraintBottom_toTopOf="@+id/searchView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <SearchView
             android:id="@+id/searchView"
             style="@style/MySearchViewStyle"
@@ -67,7 +64,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/notes" />
-
         <TextView
             android:id="@+id/Edit"
             android:layout_width="wrap_content"
@@ -80,7 +76,6 @@
             app:layout_constraintBottom_toTopOf="@+id/searchView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/Done"
             android:layout_width="wrap_content"
@@ -143,21 +138,7 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-        <TextView
-            android:id="@+id/MoveAll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginBottom="15dp"
-            android:text="Move All"
-            android:textColor="#AACCE8"
-            android:textSize="22dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     <View
         android:id="@+id/view_1"
         android:layout_width="80dp"
@@ -169,7 +150,6 @@
         app:layout_constraintBottom_toTopOf="@+id/PinnedRecyclerView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topSection" />
-
     <View
         android:id="@+id/view_2"
         android:layout_width="350dp"
@@ -182,7 +162,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_1" />
-
     <View
         android:id="@+id/view_3"
         android:layout_width="80dp"
@@ -193,7 +172,6 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_2" />
-
     <View
         android:id="@+id/view_4"
         android:layout_width="350dp"
