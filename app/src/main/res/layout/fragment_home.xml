@@ -71,7 +71,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:text="Edit"
-            android:textColor="#AACCE8"
+            android:textColor="#2019f2"
             android:textSize="22dp"
             app:layout_constraintBottom_toTopOf="@+id/searchView"
             app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +83,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:text="Done"
-            android:textColor="#AACCE8"
+            android:textColor="#2019f2"
             android:textSize="23dp"
             android:textStyle="bold"
             android:visibility="gone"
@@ -132,7 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delete All"
-            android:textColor="#AACCE8"
+            android:textColor="#2019f2"
             android:textSize="22dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -199,6 +199,16 @@
         app:layout_constraintBottom_toTopOf="@+id/PinnedRecyclerView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topSection" />
+    <ImageView
+        android:id="@+id/icSort_pinned"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_sort"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/PinnedRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topSection" />
     <TextView
         android:id="@+id/recent"
         android:layout_width="wrap_content"
@@ -211,5 +221,15 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/mainRecyclerView"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PinnedRecyclerView" />
+    <ImageView
+        android:id="@+id/icSort_recent"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_sort"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/mainRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PinnedRecyclerView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

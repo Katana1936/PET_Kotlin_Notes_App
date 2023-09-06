@@ -138,6 +138,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         binding.DeleteAll.setOnClickListener {
             taskAdapter.deleteSelectedItems()
             pinnedTaskAdapter.deleteSelectedItems()
+            toggleEditMode()
         }
     }
     private fun toggleEditMode() {
@@ -180,8 +181,10 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 pinnedTaskAdapter.notifyDataSetChanged()
                 val hasPinnedItem = pinnedToDoItemList.isNotEmpty()
                 binding.pinned.visibility = if (hasPinnedItem) View.VISIBLE else View.GONE
+                binding.icSortPinned.visibility = if (hasPinnedItem) View.VISIBLE else View.GONE
                 val hasRecentItem = toDoItemList.isNotEmpty()
                 binding.recent.visibility = if (hasRecentItem) View.VISIBLE else View.GONE
+                binding.icSortRecent.visibility = if (hasRecentItem) View.VISIBLE else View.GONE
                 binding.view1.visibility = View.GONE
                 binding.view2.visibility = View.GONE
                 binding.view3.visibility = View.GONE
@@ -408,7 +411,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     }
     private fun filterTasks(query: String) {
         val filteredList = toDoItemList.filter { it.task.contains(query, ignoreCase = true) }
-        taskAdapter.updateList(filteredList)
+        taskAdapter.updateList_temp(filteredList)
         val filteredPinnedList = pinnedToDoItemList.filter { it.task.contains(query, ignoreCase = true) }
         pinnedTaskAdapter.updateList(filteredPinnedList)
     }

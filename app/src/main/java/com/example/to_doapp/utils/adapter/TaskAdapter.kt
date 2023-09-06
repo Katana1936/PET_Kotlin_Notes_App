@@ -95,6 +95,12 @@ class TaskAdapter(private var list: MutableList<ToDoData>) : RecyclerView.Adapte
         notifyDataSetChanged()
     }
     @SuppressLint("NotifyDataSetChanged")
+    fun updateList_temp(newList: List<ToDoData>) {
+        list = newList.toMutableList()
+        list.forEach { it.isSelected = false }
+        notifyDataSetChanged()
+    }
+    @SuppressLint("NotifyDataSetChanged")
     fun deleteSelectedItems() {
         val iterator = list.iterator()
         while (iterator.hasNext()) {
