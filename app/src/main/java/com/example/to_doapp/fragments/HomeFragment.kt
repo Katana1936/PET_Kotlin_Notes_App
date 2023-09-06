@@ -70,8 +70,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 val toPosition = target.adapterPosition
                 Collections.swap(toDoItemList, fromPosition, toPosition)
                 recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
-                recyclerView.adapter?.notifyItemChanged(fromPosition)
-                recyclerView.adapter?.notifyItemChanged(toPosition)
+                recyclerView.adapter?.notifyDataSetChanged()
                 return true
             }
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
@@ -94,8 +93,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 val toPosition = target.adapterPosition
                 Collections.swap(toDoItemList, fromPosition, toPosition)
                 recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
-                recyclerView.adapter?.notifyItemChanged(fromPosition)
-                recyclerView.adapter?.notifyItemChanged(toPosition)
                 return true
             }
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {}
