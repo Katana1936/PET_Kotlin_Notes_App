@@ -217,7 +217,6 @@
         android:text="Pinned"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/PinnedRecyclerView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topSection" />
@@ -227,7 +226,6 @@
         android:layout_height="30dp"
         android:layout_marginEnd="20dp"
         android:src="@drawable/ic_sort"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/PinnedRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topSection" />
@@ -240,7 +238,6 @@
         android:text="Recent"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/mainRecyclerView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PinnedRecyclerView" />
@@ -250,7 +247,6 @@
         android:layout_height="30dp"
         android:layout_marginEnd="20dp"
         android:src="@drawable/ic_sort"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/mainRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PinnedRecyclerView" />

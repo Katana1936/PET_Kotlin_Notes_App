@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
@@ -114,9 +115,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             }
         })
         touchHelperPinned.attachToRecyclerView(binding.PinnedRecyclerView)
-
-
-
         binding.addTaskBtnMain.setOnClickListener {
             if (frag != null)
                 childFragmentManager.beginTransaction().remove(frag!!).commit()
@@ -141,6 +139,26 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             pinnedTaskAdapter.deleteSelectedItems()
             toggleEditMode()
             Toast.makeText(context, "Items deleted successfully", Toast.LENGTH_SHORT).show()
+        }
+        val sortIcon = binding.icSortPinned
+        sortIcon.setOnClickListener { view ->
+            val popupMenu = PopupMenu(requireContext(), view)
+            popupMenu.inflate(R.menu.sort_menu)
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.action_sort_alpha -> {
+                        //
+                    }
+                    R.id.action_sort_oldest -> {
+                        //
+                    }
+                    R.id.action_sort_nowest -> {
+                        //
+                    }
+                }
+                true
+            }
+            popupMenu.show()
         }
     }
     private fun toggleEditMode() {
@@ -250,18 +268,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 return true
             }
         })
-
-
-
-
-
-
-
-
-
-
-
-
         //main
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(
@@ -329,17 +335,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(binding.mainRecyclerView)
-
-
-
-
-
-
-
-
-
-
-
         //pinned
         binding.PinnedRecyclerView.setHasFixedSize(true)
         binding.PinnedRecyclerView.layoutManager = LinearLayoutManager(context)
