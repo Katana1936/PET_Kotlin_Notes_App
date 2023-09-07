@@ -419,15 +419,22 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     }
     private fun updateNoteCount() {
         val itemCount = toDoItemList.size + pinnedToDoItemList.size
-        Log.e("NoteCount", "Total note count: $itemCount")
         val imageView = binding.root.findViewById<ImageView>(R.id.felt_tip_pen)
-        imageView.visibility = if (itemCount == 0) View.VISIBLE else View.GONE
+        val backImageView = binding.root.findViewById<ImageView>(R.id.felt_tip_pen_back)
+        if (itemCount == 0) {
+            imageView.visibility = View.VISIBLE
+            backImageView.visibility = View.GONE
+        } else {
+            imageView.visibility = View.GONE
+            backImageView.visibility = View.VISIBLE
+        }
         binding.noteNum.text = when (itemCount) {
             0 -> "No Notes"
             1 -> "1 Note"
             else -> "$itemCount Notes"
         }
     }
+
     override fun saveTask(todoTask: String, todoEdit: TextView, isPinned: Boolean) {
         val taskId = database.push().key ?: return
         val newTask = ToDoData(taskId, todoTask, isPinned = false)
