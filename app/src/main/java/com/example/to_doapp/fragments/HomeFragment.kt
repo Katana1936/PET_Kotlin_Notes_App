@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
@@ -139,6 +140,7 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             taskAdapter.deleteSelectedItems()
             pinnedTaskAdapter.deleteSelectedItems()
             toggleEditMode()
+            Toast.makeText(context, "Items deleted successfully", Toast.LENGTH_SHORT).show()
         }
     }
     private fun toggleEditMode() {
@@ -418,6 +420,8 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
     private fun updateNoteCount() {
         val itemCount = toDoItemList.size + pinnedToDoItemList.size
         Log.e("NoteCount", "Total note count: $itemCount")
+        val imageView = binding.root.findViewById<ImageView>(R.id.felt_tip_pen)
+        imageView.visibility = if (itemCount == 0) View.VISIBLE else View.GONE
         binding.noteNum.text = when (itemCount) {
             0 -> "No Notes"
             1 -> "1 Note"
