@@ -1,5 +1,4 @@
 package com.example.to_doapp.fragments
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import androidx.navigation.Navigation
 import com.example.to_doapp.R
 import com.example.to_doapp.databinding.FragmentSignInBinding
 import com.google.firebase.auth.FirebaseAuth
-
 class SignInFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var mAuth: FirebaseAuth
@@ -20,7 +18,6 @@ class SignInFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentSignInBinding.inflate(inflater, container, false)
         return binding.root
     }
