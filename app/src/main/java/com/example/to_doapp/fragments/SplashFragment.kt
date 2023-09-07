@@ -24,7 +24,6 @@ class SplashFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,7 +43,7 @@ class SplashFragment : Fragment() {
                 navController.navigate(R.id.action_splashFragment_to_homeFragment)
             else
                 navController.navigate(R.id.action_splashFragment_to_signInFragment)
-        }, 2500)
+        }, 0)
     }
     private fun init(view: View) {
         mAuth = FirebaseAuth.getInstance()
