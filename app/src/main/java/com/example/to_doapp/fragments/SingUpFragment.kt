@@ -18,7 +18,6 @@ class SignUpFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentSignUpBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -32,14 +31,31 @@ class SignUpFragment : Fragment() {
             val email = binding.emailEt.text.toString()
             val pass = binding.passEt.text.toString()
             val verifyPass = binding.verifyPassEt.text.toString()
+
             if (email.isNotEmpty() && pass.isNotEmpty() && verifyPass.isNotEmpty()) {
                 if (pass == verifyPass) {
+                    checkEmailExistsOrNot(email, pass)
+                } else {
+                    Toast.makeText(context, "Passwords are not the same", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(context, "Empty fields are not allowed", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    private fun checkEmailExistsOrNot(email: String, pass: String) {
+        mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val isNewUser = task.result?.signInMethods?.isEmpty() == true
+
+                if (isNewUser) {
                     registerUser(email, pass)
                 } else {
-                    Toast.makeText(context, "Password is not same", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Email is already registered", Toast.LENGTH_SHORT).show()
                 }
-            } else
-                Toast.makeText(context, "Empty fields are not allowed", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, task.exception.toString(), Toast.LENGTH_SHORT).show()
+            }
         }
     }
     private fun registerUser(email: String, pass: String) {
