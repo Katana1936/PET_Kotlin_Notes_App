@@ -6,6 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.SignInFragment">
+    <ImageView
+        android:id="@+id/felt_tip_pen_sign_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/felt_tip_pen_sign_in"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -14,7 +23,7 @@
         android:layout_marginEnd="24dp"
         android:fontFamily="@font/new_bolt"
         android:text="Sign In"
-        android:textColor="@color/black"
+        android:textColor="@color/cat_orange"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +43,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/white"
+            android:background="#ffffff"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:hintEnabled="false">
@@ -42,7 +51,7 @@
                 android:id="@+id/emailEt"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/white"
+                android:background="#ffffff"
                 android:hint="@string/enter_your_email"
                 android:inputType="textEmailAddress"
                 android:paddingStart="12dp"
@@ -65,7 +74,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/white"
+            android:background="#ffffff"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:hintEnabled="false"
@@ -75,7 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingTop="15dp"
-                android:background="@color/white"
+                android:background="#ffffff"
                 android:hint="@string/enter_your_pass"
                 android:inputType="textPassword"
                 android:paddingStart="12dp" />
@@ -94,7 +103,6 @@
         android:id="@+id/textview32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
         android:fontFamily="@font/inter_regular"
         android:text="Not Registered Yet ?"
         android:textSize="16sp"
@@ -108,7 +116,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter_regular"
         android:text=" Sign Up"
-        android:textColor="@color/text_color"
+        android:textColor="@color/fiotel_dream"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="0.5"

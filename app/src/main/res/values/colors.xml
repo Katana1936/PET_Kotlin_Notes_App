@@ -7,10 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
     <color name="text_color">#21108A</color>
     <color name="secondary_color">#D5CEFF</color>
 
-    <color name="default_background">#000000</color>
-    <color name="selected_background">#ffffff</color>
+
+
+
+    <color name="cat_orange">#EB7E44</color>
+    <color name="fiotel_dream">#5C4C7C</color>
 </resources>

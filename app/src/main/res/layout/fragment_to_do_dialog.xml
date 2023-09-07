@@ -9,7 +9,6 @@
         android:background="@drawable/rounded_background_fragment_dialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <ImageView
             android:id="@+id/todoClose"
             android:layout_width="30dp"
@@ -20,7 +19,6 @@
             app:layout_constraintBottom_toTopOf="@+id/EditText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/calendar"
             android:layout_width="25dp"
@@ -32,7 +30,6 @@
             app:layout_constraintBottom_toTopOf="@+id/EditText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
@@ -46,7 +43,6 @@
             app:layout_constraintBottom_toTopOf="@+id/EditText"
             app:layout_constraintStart_toEndOf="@+id/calendar"
             app:layout_constraintTop_toTopOf="parent" />
-
         <EditText
             android:id="@+id/EditText"
             android:layout_width="match_parent"
@@ -65,11 +61,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/todoClose" />
-
         <ImageView
             android:id="@+id/todoNextBtn"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginBottom="30dp"
             android:src="@drawable/ic_done"
             app:layout_constraintBottom_toBottomOf="parent"
