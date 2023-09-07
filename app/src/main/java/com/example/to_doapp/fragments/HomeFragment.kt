@@ -434,7 +434,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             else -> "$itemCount Notes"
         }
     }
-
     override fun saveTask(todoTask: String, todoEdit: TextView, isPinned: Boolean) {
         val taskId = database.push().key ?: return
         val newTask = ToDoData(taskId, todoTask, isPinned = false)
