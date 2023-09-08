@@ -114,9 +114,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             }
         })
         touchHelperPinned.attachToRecyclerView(binding.PinnedRecyclerView)
-
-
-
         binding.addTaskBtnMain.setOnClickListener {
             if (frag != null)
                 childFragmentManager.beginTransaction().remove(frag!!).commit()
@@ -184,9 +181,11 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 val hasPinnedItem = pinnedToDoItemList.isNotEmpty()
                 binding.pinned.visibility = if (hasPinnedItem) View.VISIBLE else View.GONE
                 binding.icSortPinned.visibility = if (hasPinnedItem) View.VISIBLE else View.GONE
+                binding.AZSortPinned.visibility = if (hasPinnedItem) View.VISIBLE else View.GONE
                 val hasRecentItem = toDoItemList.isNotEmpty()
                 binding.recent.visibility = if (hasRecentItem) View.VISIBLE else View.GONE
                 binding.icSortRecent.visibility = if (hasRecentItem) View.VISIBLE else View.GONE
+                binding.AZSortRecent.visibility = if (hasRecentItem) View.VISIBLE else View.GONE
                 binding.view1.visibility = View.GONE
                 binding.view2.visibility = View.GONE
                 binding.view3.visibility = View.GONE
@@ -198,6 +197,18 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         })
     }
     private fun init() {
+        val sortIcon_recent = binding.icSortRecent
+        sortIcon_recent.setOnClickListener {
+            toDoItemList.sortBy { it.task }
+            taskAdapter.updateList(toDoItemList)
+        }
+        val sortIcon_pinned = binding.icSortPinned
+        sortIcon_pinned.setOnClickListener {
+            pinnedToDoItemList.sortBy { it.task }
+            pinnedTaskAdapter.updateList(pinnedToDoItemList)
+        }
+
+
         binding.view1.visibility = View.VISIBLE
         val animator1 = ObjectAnimator.ofFloat(binding.view1, "alpha", 1f, 0.3f, 1f)
         animator1.duration = 1300
@@ -329,17 +340,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(binding.mainRecyclerView)
-
-
-
-
-
-
-
-
-
-
-
         //pinned
         binding.PinnedRecyclerView.setHasFixedSize(true)
         binding.PinnedRecyclerView.layoutManager = LinearLayoutManager(context)
