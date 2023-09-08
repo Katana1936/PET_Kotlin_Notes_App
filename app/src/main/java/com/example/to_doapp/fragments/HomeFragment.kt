@@ -197,16 +197,36 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         })
     }
     private fun init() {
+        var isSortedByTaskRecent = false
         val sortIcon_recent = binding.icSortRecent
         sortIcon_recent.setOnClickListener {
-            toDoItemList.sortBy { it.task }
-            taskAdapter.updateList(toDoItemList)
+            if (isSortedByTaskRecent) {
+                toDoItemList.sortByDescending { it.timestamp }
+                taskAdapter.updateList(toDoItemList)
+                Toast.makeText(context, "Sorted by Time", Toast.LENGTH_SHORT).show()
+            } else {
+                toDoItemList.sortBy { it.task }
+                taskAdapter.updateList(toDoItemList)
+                Toast.makeText(context, "Sorted A-Z", Toast.LENGTH_SHORT).show()
+            }
+            isSortedByTaskRecent = !isSortedByTaskRecent
         }
+        var isSortedByTaskPinned = false
         val sortIcon_pinned = binding.icSortPinned
         sortIcon_pinned.setOnClickListener {
-            pinnedToDoItemList.sortBy { it.task }
-            pinnedTaskAdapter.updateList(pinnedToDoItemList)
+            if (isSortedByTaskPinned) {
+                pinnedToDoItemList.sortByDescending { it.timestamp }
+                pinnedTaskAdapter.updateList(pinnedToDoItemList)
+                Toast.makeText(context, "Sorted by Time", Toast.LENGTH_SHORT).show()
+            } else {
+                pinnedToDoItemList.sortBy { it.task }
+                pinnedTaskAdapter.updateList(pinnedToDoItemList)
+                Toast.makeText(context, "Sorted A-Z", Toast.LENGTH_SHORT).show()
+            }
+            isSortedByTaskPinned = !isSortedByTaskPinned
         }
+
+
 
 
         binding.view1.visibility = View.VISIBLE
