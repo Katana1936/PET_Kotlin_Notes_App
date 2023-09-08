@@ -28,6 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/PinnedRecyclerView"
         android:layout_width="0dp"
@@ -49,6 +50,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topSection"
         android:layout_width="match_parent"
@@ -56,6 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <TextView
             android:id="@+id/notes"
             android:layout_width="wrap_content"
@@ -65,13 +68,14 @@
             android:layout_marginStart="20dp"
             android:layout_marginBottom="15dp"
             android:fontFamily="@font/inter_extra_bold"
-            android:textColor="@color/fiotel_dream"
             android:text="Notes"
+            android:textColor="@color/fiotel_dream"
             android:textSize="40dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/searchView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <SearchView
             android:id="@+id/searchView"
             style="@style/MySearchViewStyle"
@@ -86,6 +90,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/notes" />
+
         <TextView
             android:id="@+id/Edit"
             android:layout_width="wrap_content"
@@ -98,6 +103,7 @@
             app:layout_constraintBottom_toTopOf="@+id/searchView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/Done"
             android:layout_width="wrap_content"
@@ -234,6 +240,16 @@
         app:layout_constraintBottom_toTopOf="@+id/PinnedRecyclerView"
         app:layout_constraintEnd_toStartOf="@+id/icSort_pinned"
         app:layout_constraintTop_toBottomOf="@+id/topSection" />
+
+    <ImageView
+        android:id="@+id/icTime_pinned"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/ic_time"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/PinnedRecyclerView"
+        app:layout_constraintEnd_toStartOf="@+id/icSort_pinned"
+        app:layout_constraintTop_toBottomOf="@+id/topSection" />
     <ImageView
         android:id="@+id/icSort_pinned"
         android:layout_width="30dp"
@@ -279,4 +295,14 @@
         app:layout_constraintBottom_toTopOf="@+id/mainRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PinnedRecyclerView" />
+    <ImageView
+        android:id="@+id/icTime_recent"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/ic_time"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/mainRecyclerView"
+        app:layout_constraintEnd_toStartOf="@+id/icSort_recent"
+        app:layout_constraintTop_toBottomOf="@+id/PinnedRecyclerView"
+        app:layout_constraintVertical_bias="0.473" />
 </androidx.constraintlayout.widget.ConstraintLayout>
