@@ -201,14 +201,14 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         val sortIcon_recent = binding.icSortRecent
         sortIcon_recent.setOnClickListener {
             if (isSortedByTaskRecent) {
-                binding.AZSortRecent.visibility == View.INVISIBLE
-                binding.icTimeRecent.visibility == View.VISIBLE
+                binding.AZSortRecent.visibility = View.VISIBLE
+                binding.icTimeRecent.visibility = View.INVISIBLE
                 toDoItemList.sortByDescending { it.timestamp }
                 taskAdapter.updateList(toDoItemList)
                 Toast.makeText(context, "Sorted by Time", Toast.LENGTH_SHORT).show()
             } else {
-                binding.AZSortRecent.visibility == View.VISIBLE
-                binding.icTimeRecent.visibility == View.INVISIBLE
+                binding.AZSortRecent.visibility = View.INVISIBLE
+                binding.icTimeRecent.visibility = View.VISIBLE
                 toDoItemList.sortBy { it.task }
                 taskAdapter.updateList(toDoItemList)
                 Toast.makeText(context, "Sorted A-Z", Toast.LENGTH_SHORT).show()
@@ -219,24 +219,20 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         val sortIcon_pinned = binding.icSortPinned
         sortIcon_pinned.setOnClickListener {
             if (isSortedByTaskPinned) {
-                binding.AZSortPinned.visibility == View.INVISIBLE
-                binding.icTimePinned.visibility == View.VISIBLE
+                binding.AZSortPinned.visibility = View.VISIBLE
+                binding.icTimePinned.visibility = View.INVISIBLE
                 pinnedToDoItemList.sortByDescending { it.timestamp }
                 pinnedTaskAdapter.updateList(pinnedToDoItemList)
                 Toast.makeText(context, "Sorted by Time", Toast.LENGTH_SHORT).show()
             } else {
-                binding.AZSortPinned.visibility == View.VISIBLE
-                binding.icTimePinned.visibility == View.INVISIBLE
+                binding.AZSortPinned.visibility = View.INVISIBLE
+                binding.icTimePinned.visibility = View.VISIBLE
                 pinnedToDoItemList.sortBy { it.task }
                 pinnedTaskAdapter.updateList(pinnedToDoItemList)
                 Toast.makeText(context, "Sorted A-Z", Toast.LENGTH_SHORT).show()
             }
             isSortedByTaskPinned = !isSortedByTaskPinned
         }
-
-
-
-
         binding.view1.visibility = View.VISIBLE
         val animator1 = ObjectAnimator.ofFloat(binding.view1, "alpha", 1f, 0.3f, 1f)
         animator1.duration = 1300
