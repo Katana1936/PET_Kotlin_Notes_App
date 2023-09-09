@@ -8,9 +8,6 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,14 +33,15 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import java.util.Collections
 import kotlin.math.abs
 import kotlin.math.min
 class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener,
     TaskAdapter.TaskAdapterInterface, PinnedTaskAdapter.PinnedTaskAdapterInterface {
+    private var isSortedByTaskRecent = false
+    private var isSortedByTaskPinned = false
+    private var isFirstClickPinned = true
+    private var isFirstClickRecent = true
     private lateinit var binding: FragmentHomeBinding
     private lateinit var database: DatabaseReference
     private var frag: ToDoDialogFragment? = null
@@ -181,11 +179,13 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 val hasPinnedItem = pinnedToDoItemList.isNotEmpty()
                 binding.pinned.visibility = if (hasPinnedItem) View.VISIBLE else View.GONE
                 binding.icSortPinned.visibility = if (hasPinnedItem) View.VISIBLE else View.GONE
-                binding.AZSortPinned.visibility = if (hasPinnedItem) View.VISIBLE else View.GONE
+                binding.AZSortPinned.visibility = if (hasPinnedItem && !isFirstClickPinned) View.VISIBLE else View.GONE
+                binding.icTimePinned.visibility = if (binding.AZSortPinned.visibility == View.VISIBLE) View.GONE else if (!isFirstClickPinned && hasPinnedItem) View.VISIBLE else View.GONE
                 val hasRecentItem = toDoItemList.isNotEmpty()
                 binding.recent.visibility = if (hasRecentItem) View.VISIBLE else View.GONE
                 binding.icSortRecent.visibility = if (hasRecentItem) View.VISIBLE else View.GONE
-                binding.AZSortRecent.visibility = if (hasRecentItem) View.VISIBLE else View.GONE
+                binding.AZSortRecent.visibility = if (hasRecentItem && !isFirstClickRecent) View.VISIBLE else View.GONE
+                binding.icTimeRecent.visibility = if (binding.AZSortRecent.visibility == View.VISIBLE) View.GONE else if (!isFirstClickRecent && hasRecentItem) View.VISIBLE else View.GONE
                 binding.view1.visibility = View.GONE
                 binding.view2.visibility = View.GONE
                 binding.view3.visibility = View.GONE
@@ -197,36 +197,34 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
         })
     }
     private fun init() {
-        var isSortedByTaskRecent = false
         val sortIcon_recent = binding.icSortRecent
         sortIcon_recent.setOnClickListener {
             if (isSortedByTaskRecent) {
-                binding.AZSortRecent.visibility = View.VISIBLE
-                binding.icTimeRecent.visibility = View.INVISIBLE
+                binding.icTimeRecent.visibility = View.VISIBLE
+                binding.AZSortRecent.visibility = View.INVISIBLE
                 toDoItemList.sortByDescending { it.timestamp }
                 taskAdapter.updateList(toDoItemList)
                 Toast.makeText(context, "Sorted by Time", Toast.LENGTH_SHORT).show()
             } else {
-                binding.AZSortRecent.visibility = View.INVISIBLE
-                binding.icTimeRecent.visibility = View.VISIBLE
+                binding.icTimeRecent.visibility = View.INVISIBLE
+                binding.AZSortRecent.visibility = View.VISIBLE
                 toDoItemList.sortBy { it.task }
                 taskAdapter.updateList(toDoItemList)
                 Toast.makeText(context, "Sorted A-Z", Toast.LENGTH_SHORT).show()
             }
             isSortedByTaskRecent = !isSortedByTaskRecent
         }
-        var isSortedByTaskPinned = false
         val sortIcon_pinned = binding.icSortPinned
         sortIcon_pinned.setOnClickListener {
             if (isSortedByTaskPinned) {
-                binding.AZSortPinned.visibility = View.VISIBLE
-                binding.icTimePinned.visibility = View.INVISIBLE
+                binding.icTimePinned.visibility = View.VISIBLE
+                binding.AZSortPinned.visibility = View.INVISIBLE
                 pinnedToDoItemList.sortByDescending { it.timestamp }
                 pinnedTaskAdapter.updateList(pinnedToDoItemList)
                 Toast.makeText(context, "Sorted by Time", Toast.LENGTH_SHORT).show()
             } else {
-                binding.AZSortPinned.visibility = View.INVISIBLE
-                binding.icTimePinned.visibility = View.VISIBLE
+                binding.icTimePinned.visibility = View.INVISIBLE
+                binding.AZSortPinned.visibility = View.VISIBLE
                 pinnedToDoItemList.sortBy { it.task }
                 pinnedTaskAdapter.updateList(pinnedToDoItemList)
                 Toast.makeText(context, "Sorted A-Z", Toast.LENGTH_SHORT).show()
@@ -285,18 +283,6 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
                 return true
             }
         })
-
-
-
-
-
-
-
-
-
-
-
-
         //main
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(
@@ -544,4 +530,5 @@ class HomeFragment : Fragment(), ToDoDialogFragment.OnDialogNextBtnClickListener
             }
         }
     }
+
 }
